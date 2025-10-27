@@ -54,7 +54,7 @@
             return True
 
         if not isinstance(other, Chapter):
-            return NotImplemented
+            raise NotImplemented
 
         return self.id >= other.id
 
@@ -66,7 +66,7 @@
             return False
 
         if not isinstance(other, Chapter):
-            return NotImplemented
+            raise NotImplemented
 
         return self.id > other.id
 
@@ -99,7 +99,7 @@
             return True
 
         if not isinstance(other, Chapter):
-            return NotImplemented
+            raise NotImplemented
 
         return self.id <= other.id
 
@@ -111,7 +111,7 @@
             return False
 
         if not isinstance(other, Chapter):
-            return NotImplemented
+            raise NotImplemented
 
         return self.id < other.id
 
