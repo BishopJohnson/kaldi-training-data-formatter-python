@@ -116,13 +116,12 @@
         return self.id < other.id
 
     def __str__(self) -> str:
-        seperator = " | "
-        str_list = [
-            str(self.id), seperator,
-            str(self.speaker_id), seperator,
-            str(self.subset), seperator,
-            str(self.project_id), seperator,
+        str_list: list[str] = [
+            str(self.id),
+            str(self.speaker_id),
+            str(self.subset),
+            str(self.project_id),
             str(self.song_id),
         ]
 
-        return ''.join(str_list)
+        return ' | '.join(str_list)
