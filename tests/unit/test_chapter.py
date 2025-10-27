@@ -3,9 +3,9 @@ from src.kaldi_training_data_formatter import Chapter
 
 
 class TestChapter(unittest.TestCase):
-    def test_to_string_test(self):
+    def test_str_returns_expected(self):
         param_list = [
-            # (chapter)_id, project_id, song_id, speaker_id, subset, expected
+            # (chapter_)id, project_id, song_id, speaker_id, subset, expected
             (1, 1, 'song', 1, 'subset', '1 | 1 | subset | 1 | song'),
             (100, 1, 'CVRD-438', 1, 'train-clean', '100 | 1 | train-clean | 1 | CVRD-438'),
         ]

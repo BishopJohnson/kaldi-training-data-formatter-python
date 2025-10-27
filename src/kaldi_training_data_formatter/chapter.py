@@ -1,64 +1,52 @@
 ﻿class Chapter:
-
-    ### Constructors ###
-
     def __init__(self, init_id: int):
-        self._id = init_id
-        self._project_id = 0
-        self._song_id = None
-        self._speaker_id = 0
-        self._subset = None
+        self.__id: int = init_id
+        self.__project_id: int = 0
+        self.__song_id: str | None = None
+        self.__speaker_id: int = 0
+        self.__subset: str | None = None
 
-    ### Properties ###
-
-    # Id
     @property
     def id(self) -> int:
-        return self._id
+        return self.__id
 
-    # ProjectId
     @property
     def project_id(self) -> int:
-        return self._project_id
+        return self.__project_id
 
     @project_id.setter
     def project_id(self, value: int) -> None:
-        self._project_id = value
+        self.__project_id = value
 
-    # SongId
     @property
-    def song_id(self) -> str:
-        return self._song_id
+    def song_id(self) -> str | None:
+        return self.__song_id
 
     @song_id.setter
     def song_id(self, value: str) -> None:
-        self._song_id = value
+        self.__song_id = value
 
     @song_id.deleter
     def song_id(self) -> None:
-        del self._song_id
+        del self.__song_id
 
-    # SpeakerId
     @property
     def speaker_id(self) -> int:
-        return self._speaker_id
+        return self.__speaker_id
 
     @speaker_id.setter
     def speaker_id(self, value: int) -> None:
-        self._speaker_id = value
+        self.__speaker_id = value
 
-    # Subset
     @property
-    def subset(self) -> str:
-        return self._subset
+    def subset(self) -> str | None:
+        return self.__subset
 
     @subset.setter
     def subset(self, value: str) -> None:
-        self._subset = value
+        self.__subset = value
 
-    ### Functions ###
-
-    def __ge__(self, other):
+    def __ge__(self, other) -> bool:
         if other is None:
             return True
 
@@ -70,7 +58,7 @@
 
         return self.id >= other.id
 
-    def __gt__(self, other):
+    def __gt__(self, other) -> bool:
         if other is None:
             return True
 
@@ -103,7 +91,7 @@
     def __hash__(self) -> int:
         return hash(self.id)
 
-    def __le__(self, other):
+    def __le__(self, other) -> bool:
         if other is None:
             return True
 
@@ -115,7 +103,7 @@
 
         return self.id <= other.id
 
-    def __lt__(self, other):
+    def __lt__(self, other) -> bool:
         if other is None:
             return True
 
