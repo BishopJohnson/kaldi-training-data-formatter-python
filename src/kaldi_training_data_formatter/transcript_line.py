@@ -20,6 +20,18 @@ class TranscriptLine:
     def text(self) -> list[str]:
         return self.__text
 
+    def __eq__(self, other) -> bool:
+        if other is None:
+            return False
+
+        if self is other:
+            return True
+
+        if not isinstance(other, TranscriptLine):
+            return False
+
+        return self.id == other.id and self.text == other.text
+
     def __str__(self) -> str:
         str_list: list[str] = [self.id]
         str_list += self.text
