@@ -6,3 +6,6 @@ from .project_util import ProjectUtil
 # Depends on the above
 from .abstract_file_reader import AbstractFileReader
 from .transcript_reader import TranscriptReader
+
+# Depends on the above
+from .files_util import FilesUtil
