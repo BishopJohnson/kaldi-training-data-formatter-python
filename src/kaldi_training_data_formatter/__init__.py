@@ -9,3 +9,4 @@ from .transcript_reader import TranscriptReader
 
 # Depends on the above
 from .files_util import FilesUtil
+from .vocab_compiler import VocabCompiler
