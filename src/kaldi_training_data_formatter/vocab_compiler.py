@@ -74,4 +74,4 @@ class VocabCompiler:
                     f.write(vocab)
                     f.write('\n')
         except Exception as e:
-            pass
+            print(f'Error while saving vocabulary file: ' + str(e))

@@ -1,12 +1,11 @@
 ﻿import os
 import unittest
 
-
 from src.kaldi_training_data_formatter import VocabCompiler
 from tests.case.file_test_case import FileTestCase
 
 
-class MyTestCase(FileTestCase):
+class TestVocabCompiler(FileTestCase):
     @classmethod
     def setUpClass(cls):
         cls.resources_path: str = os.path.join(os.getcwd(), 'resources')
