@@ -1,0 +1,30 @@
+﻿[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kaldi-data-formatter"
+authors = [
+    { name = "Bishop Johnson" }
+]
+maintainers = [
+    { name = "Bishop Johnson" }
+]
+dynamic = ["version"]
+requires-python = ">= 3.12"
+dependencies = [
+]
+description = "Script for formatting singing training data for Kaldi-ASR"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICEN[CS]E.*"]
+classifiers = [
+    "Programming Language :: Python"
+]
+
+[project.urls]
+Repository = "https://github.com/BishopJohnson/kaldi-training-data-formatter-python.git"
+Issues = "https://github.com/BishopJohnson/kaldi-training-data-formatter-python/issues"
+
+[project.scripts]
+kaldi-format-cli = "src.kaldi_training_data_formatter:app"
