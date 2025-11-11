@@ -11,3 +11,6 @@ from .transcript_reader import TranscriptReader
 from .files_util import FilesUtil
 from .lexicon_compiler import LexiconCompiler
 from .vocab_compiler import VocabCompiler
+
+# Import app last
+from .app import App
