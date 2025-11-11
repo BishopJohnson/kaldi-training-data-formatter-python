@@ -27,4 +27,7 @@ Repository = "https://github.com/BishopJohnson/kaldi-training-data-formatter-pyt
 Issues = "https://github.com/BishopJohnson/kaldi-training-data-formatter-python/issues"
 
 [project.scripts]
-kaldi-format-cli = "src.kaldi_training_data_formatter:App"
+kaldi-format-cli = "kaldi_training_data_formatter.app:cli"
+
+[tools.setuptools]
+package-dir = { "" = "src" }
