@@ -1,5 +1,5 @@
 ﻿[build-system]
-requires = ["hatchling >= 1.26"]
+requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
@@ -10,7 +10,7 @@ authors = [
 maintainers = [
     { name = "Bishop Johnson" }
 ]
-dynamic = ["version"]
+dynamic = ["1.0.0"]
 requires-python = ">= 3.12"
 dependencies = [
 ]
@@ -27,4 +27,4 @@ Repository = "https://github.com/BishopJohnson/kaldi-training-data-formatter-pyt
 Issues = "https://github.com/BishopJohnson/kaldi-training-data-formatter-python/issues"
 
 [project.scripts]
-kaldi-format-cli = "src.kaldi_training_data_formatter:app"
+kaldi-format-cli = "src.kaldi_training_data_formatter:App"
