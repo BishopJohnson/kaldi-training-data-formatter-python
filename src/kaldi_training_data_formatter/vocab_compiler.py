@@ -67,7 +67,7 @@ class VocabCompiler:
         sorted_vocab.sort()
 
         try:
-            os.mkdir(self.__output_root)
+            os.makedirs(self.__output_root, exist_ok=True)
 
             with open(filepath, mode='w', encoding='utf-8') as f:  # Never write vocabulary with BOM
                 for vocab in sorted_vocab:
