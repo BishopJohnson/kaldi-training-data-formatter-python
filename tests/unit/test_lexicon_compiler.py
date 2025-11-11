@@ -1,0 +1,152 @@
+﻿import os
+import unittest
+from typing import Tuple
+
+from src.kaldi_training_data_formatter import LexiconCompiler
+from tests.case.file_test_case import FileTestCase
+
+
+class TestLexiconCompiler(FileTestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.resources_path: str = os.path.join(os.getcwd(), 'resources')
+        cls.input_path: str = os.path.join(cls.resources_path, 'input')
+        cls.output_path: str = os.path.join(cls.resources_path, 'output')
+
+    def test_save_lexicon_when_all_vocabulary_has_phones_creates_expected_output_file(self):
+        param_list: list[Tuple[str, list[str], str]] = [
+            # lexicon, vocabulary, expected
+            ('test-import-lexicon.txt', [
+                'a',
+                'all',
+                'and',
+                'as',
+                'aspire',
+                'been',
+                'brighter',
+                'chance',
+                'chasing',
+                'desire',
+                'dreamer',
+                'ever',
+                'fire',
+                'have',
+                'higher',
+                'i',
+                'light',
+                'lighter',
+                'like',
+                'my',
+                'never',
+                'out',
+                'sinner',
+                'spreading',
+                'start',
+                'take',
+                'that',
+                'the',
+                'we',
+                'wildfire',
+                'with',
+                'you',
+            ], 'expected-lexicon-1.txt'),
+        ]
+
+        for lexicon, vocabulary, expected in param_list:
+            with self.subTest():
+                # Arrange
+                expected_path: str = os.path.join(self.__class__.resources_path, expected)
+                actual_path: str = os.path.join(self.__class__.output_path, LexiconCompiler.LEXICON_FILENAME)
+                import_path: str = os.path.join(self.__class__.input_path, lexicon)
+
+                # Assumptions
+                self.assertFileExists(expected_path,
+                                      'Assume that lexicon file with expected data exists')
+                self.assertFileExists(import_path,
+                                      'Assume that lexicon file with import data exists')
+
+                # Arrange (cont.)
+                class_under_test: LexiconCompiler = LexiconCompiler(self.__class__.input_path,
+                                                                    self.__class__.output_path,
+                                                                    use_existing=False,
+                                                                    import_name=lexicon)
+                class_under_test.compile_lexicon(vocabulary)
+
+                # Act
+                class_under_test.save_lexicon()
+
+                # Assert
+                self.assertFileExists(actual_path,
+                                      'Assert that lexicon file exists')
+                self.assertFileEqual(open(expected_path, mode='r', encoding='utf-8-sig'),
+                                     open(actual_path, mode='r', encoding='utf-8-sig'),
+                                     'Assert that lexicon in actual file equals expected file')
+
+    def test_save_lexicon_when_vocabulary_has_no_phones_creates_expected_output_file(self):
+        param_list: list[Tuple[list[str], str]] = [
+            # vocabulary, expected
+            ([
+                 'a',
+                 'all',
+                 'and',
+                 'as',
+                 'aspire',
+                 'been',
+                 'brighter',
+                 'chance',
+                 'chasing',
+                 'desire',
+                 'dreamer',
+                 'ever',
+                 'fire',
+                 'have',
+                 'higher',
+                 'i',
+                 'light',
+                 'lighter',
+                 'like',
+                 'my',
+                 'never',
+                 'out',
+                 'sinner',
+                 'spreading',
+                 'start',
+                 'take',
+                 'that',
+                 'the',
+                 'we',
+                 'wildfire',
+                 'with',
+                 'you',
+             ], 'expected-lexicon-2.txt'),
+        ]
+
+        for vocabulary, expected in param_list:
+            with self.subTest():
+                # Arrange
+                expected_path: str = os.path.join(self.__class__.resources_path, expected)
+                actual_path: str = os.path.join(self.__class__.output_path, LexiconCompiler.LEXICON_FILENAME)
+
+                # Assumptions
+                self.assertFileExists(expected_path,
+                                      'Assume that lexicon file with expected data exists')
+
+                # Arrange (cont.)
+                class_under_test: LexiconCompiler = LexiconCompiler(self.__class__.input_path,
+                                                                    self.__class__.output_path,
+                                                                    use_existing=False)
+                class_under_test.compile_lexicon(vocabulary)
+
+                # Act
+                class_under_test.save_lexicon()
+
+                # Assert
+                self.assertFileExists(actual_path,
+                                      'Assert that lexicon file exists')
+                self.assertFileEqual(open(expected_path, mode='r', encoding='utf-8-sig'),
+                                     open(actual_path, mode='r', encoding='utf-8-sig'),
+                                     'Assert that lexicon in actual file equals expected file')
+
+
+if __name__ == '__main__':
+    unittest.main()
