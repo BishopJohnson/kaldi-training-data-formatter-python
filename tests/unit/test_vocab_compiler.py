@@ -1,8 +1,8 @@
 ﻿import os
 import unittest
 
-from src.kaldi_training_data_formatter import VocabCompiler
-from tests.case.file_test_case import FileTestCase
+from case.file_test_case import FileTestCase
+from kaldi_training_data_formatter import VocabCompiler
 
 
 class TestVocabCompiler(FileTestCase):

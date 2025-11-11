@@ -2,8 +2,8 @@
 import unittest
 from typing import Tuple
 
-from src.kaldi_training_data_formatter import LexiconCompiler
-from tests.case.file_test_case import FileTestCase
+from case.file_test_case import FileTestCase
+from kaldi_training_data_formatter import LexiconCompiler
 
 
 class TestLexiconCompiler(FileTestCase):

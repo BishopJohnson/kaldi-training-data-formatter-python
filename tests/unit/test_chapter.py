@@ -1,7 +1,7 @@
 ﻿import unittest
 from typing import Tuple
 
-from src.kaldi_training_data_formatter import Chapter
+from kaldi_training_data_formatter import Chapter
 
 
 class TestChapter(unittest.TestCase):

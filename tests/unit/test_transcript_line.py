@@ -1,7 +1,7 @@
 ﻿import unittest
 from typing import Tuple
 
-from src.kaldi_training_data_formatter import TranscriptLine
+from kaldi_training_data_formatter import TranscriptLine
 
 
 class TestTranscriptLine(unittest.TestCase):

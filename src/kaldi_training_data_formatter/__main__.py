@@ -1,6 +1,6 @@
 ﻿import sys
 
-from src.kaldi_training_data_formatter import App
+from kaldi_training_data_formatter import App
 
 
 def main() -> int:
