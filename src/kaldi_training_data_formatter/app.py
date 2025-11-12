@@ -28,7 +28,7 @@ class App:
     def run(self) -> int:
         audio_root: str = os.path.join(self.__root, 'audio')
 
-        FilesUtil.format_audio_files(audio_root)
+        FilesUtil.format_transcript_files(audio_root)
 
         self.__vocab_compiler.read_vocabulary()
         self.__vocab_compiler.save_vocabulary()
