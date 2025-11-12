@@ -58,7 +58,8 @@ class FilesUtil:
                 os.rename(file, os.path.join(directory, filename + extension))
 
             # Try and mark the file as being observed
-            unobserved_ids.remove(filename)
+            if filename in unobserved_ids:
+                unobserved_ids.remove(filename)
 
         # Check if the formatted file already exists
         unobserved_ids_list: list[str] = []
