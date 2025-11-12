@@ -25,7 +25,7 @@ class TranscriptWriter:
 
             with open(filepath, mode='w', encoding='utf-8') as f:
                 text_lines: Collection[str] = lines if type(lines) is Collection[str] else [
-                    line.text
+                    ' '.join(line.text)
                     for line in lines
                 ]
 
