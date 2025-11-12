@@ -88,12 +88,8 @@ class FilesUtil:
             directories_queue += [f.path for f in os.scandir(directory) if f.is_dir()]
             has_transcript, transcript_path = FilesUtil.__has_transcript_file(directory)
 
-            print(f'directories queue: [\n\t{"\n\t".join(directories_queue)}]')
-
             if not has_transcript:
                 continue
-
-            print(f'transcript path: "{transcript_path}"')  # TODO: DELETE THIS LINE
 
             match format_type:
                 case FilesUtil.__FormatType.Audio:
