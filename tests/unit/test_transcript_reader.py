@@ -1,7 +1,7 @@
 ﻿import os.path
 import unittest
 
-from src.kaldi_training_data_formatter import TranscriptReader, TranscriptLine
+from kaldi_training_data_formatter import TranscriptReader, TranscriptLine
 
 
 class TestTranscriptReader(unittest.TestCase):

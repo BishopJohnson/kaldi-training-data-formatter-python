@@ -1,4 +1,4 @@
-﻿from src.kaldi_training_data_formatter import AbstractFileReader, TranscriptLine
+﻿from kaldi_training_data_formatter import AbstractFileReader, TranscriptLine
 
 
 class TranscriptReader(AbstractFileReader):

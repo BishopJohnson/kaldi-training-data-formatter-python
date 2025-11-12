@@ -1,7 +1,7 @@
 ﻿import argparse
 import os.path
 
-from src.kaldi_training_data_formatter import VocabCompiler, FilesUtil, LexiconCompiler
+from kaldi_training_data_formatter import VocabCompiler, FilesUtil, LexiconCompiler
 
 
 class App:
@@ -36,3 +36,7 @@ class App:
         FilesUtil.format_audio_files(audio_root)
 
         return 0
+
+
+def cli() -> int:
+    return App().run()

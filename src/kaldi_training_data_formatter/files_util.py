@@ -2,7 +2,7 @@
 from enum import Enum
 from typing import Final, Tuple
 
-from src.kaldi_training_data_formatter import TranscriptLine, TranscriptReader, ProjectUtil
+from kaldi_training_data_formatter import TranscriptLine, TranscriptReader, ProjectUtil
 
 
 class FilesUtil:

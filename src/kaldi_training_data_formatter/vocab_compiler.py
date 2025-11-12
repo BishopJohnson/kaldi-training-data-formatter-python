@@ -1,7 +1,7 @@
 ﻿import os.path
 from typing import Final
 
-from src.kaldi_training_data_formatter import ProjectUtil
+from kaldi_training_data_formatter import ProjectUtil
 
 
 class VocabCompiler:
