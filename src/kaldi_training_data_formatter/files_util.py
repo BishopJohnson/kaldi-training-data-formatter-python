@@ -18,6 +18,10 @@ class FilesUtil:
         FilesUtil.__format_files(root, FilesUtil.__FormatType.Audio)
 
     @staticmethod
+    def format_transcript_files(root: str) -> None:
+        FilesUtil.__format_files(root, FilesUtil.__FormatType.Transcript)
+
+    @staticmethod
     def __format_audio_files_for_transcript(transcript_path: str) -> None:
         directory: str = os.path.dirname(transcript_path)
 
@@ -42,9 +46,6 @@ class FilesUtil:
         ])
         unobserved_ids: set[str] = set()
         unobserved_ids.update(FilesUtil.__get_transcript_lines(transcript_path).keys())
-
-        print(f'files:\n[\n\t{"\n\t".join(files)}\n]')
-        print(f'ids:\n[\n\t{"\n\t".join(unobserved_ids)}\n]')
 
         for file in files:
             filename, extension = os.path.splitext(os.path.basename(file))
