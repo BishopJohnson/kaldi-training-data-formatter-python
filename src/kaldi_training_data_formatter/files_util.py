@@ -77,18 +77,20 @@ class FilesUtil:
     @staticmethod
     def __format_files(root: str, format_type: __FormatType) -> None:
         if not os.path.isdir(root):
+            print(f'Given root is not a directory: "{root}"')
             return
 
-        directories_queue = [root]
+        directories_queue: list[str] = [root]
 
         while len(directories_queue) > 0:
-            directory = directories_queue.pop()
+            directory: str = directories_queue.pop()
             directories_queue += [f.path for f in os.scandir(directory) if f.is_dir()]
-
-            (has_transcript, transcript_path) = FilesUtil.__has_transcript_file(directory)
+            has_transcript, transcript_path = FilesUtil.__has_transcript_file(directory)
 
             if not has_transcript:
                 continue
+
+            print(f'transcript path: "{transcript_path}"') # TODO: DELETE THIS LINE
 
             match format_type:
                 case FilesUtil.__FormatType.Audio:
@@ -152,7 +154,7 @@ class FilesUtil:
 
     @staticmethod
     def __get_transcript_lines(transcript_path: str) -> dict[str, TranscriptLine]:
-        lines = {}
+        lines: dict[str, TranscriptLine] = {}
 
         with TranscriptReader(transcript_path) as reader:
             line: TranscriptLine
