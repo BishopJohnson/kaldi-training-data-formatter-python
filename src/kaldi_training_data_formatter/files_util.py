@@ -29,7 +29,7 @@ class FilesUtil:
             print("Transcript directory is not valid")
             return
 
-        user_id, project_id = ProjectUtil.get_user_and_project_id(directory)
+        user_id, project_id = ProjectUtil.get_user_and_project_id(transcript_path)
 
         if not user_id or not project_id:
             print('user_id or project_id are null or empty')
