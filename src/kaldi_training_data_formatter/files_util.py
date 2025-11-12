@@ -111,7 +111,7 @@ class FilesUtil:
         if not directory:
             raise Exception(f'No valid directory for path: "{transcript_path}"')
 
-        user_id, project_id = ProjectUtil.get_user_and_project_id(directory)
+        user_id, project_id = ProjectUtil.get_user_and_project_id(transcript_path)
 
         if not user_id or not project_id:
             raise Exception(f'Cannot determine user or project ID from path: "{transcript_path}"')
