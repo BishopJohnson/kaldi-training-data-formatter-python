@@ -137,7 +137,8 @@ class FilesUtil:
                 new_lines.append(line)
                 continue
 
-            int_id: int | None = int(line_id.strip('[]')) if line_id.isdigit() else None
+            formatted_line_id: str = line_id.strip('[]')
+            int_id: int | None = int(formatted_line_id) if formatted_line_id.isdigit() else None
 
             if int_id is None:
                 raise Exception(f'Line with unknown format found in transcript file: "{transcript_path}"')
