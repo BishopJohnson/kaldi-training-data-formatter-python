@@ -22,10 +22,6 @@ classifiers = [
     "Programming Language :: Python"
 ]
 
-[project.urls]
-"Repository" = "https://github.com/BishopJohnson/kaldi-training-data-formatter-python.git"
-"Issues" = "https://github.com/BishopJohnson/kaldi-training-data-formatter-python/issues"
-
 [project.scripts]
 kaldi-format-cli = "kaldi_training_data_formatter.app:cli"
 
