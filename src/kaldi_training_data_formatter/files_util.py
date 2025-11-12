@@ -92,17 +92,13 @@ class FilesUtil:
             if not has_transcript:
                 continue
 
-            print(f'transcript path: "{transcript_path}"') # TODO: DELETE THIS LINE
+            print(f'transcript path: "{transcript_path}"')  # TODO: DELETE THIS LINE
 
             match format_type:
                 case FilesUtil.__FormatType.Audio:
                     FilesUtil.__format_audio_files_for_transcript(transcript_path)
-                    break
-
                 case FilesUtil.__FormatType.Transcript:
                     FilesUtil.__format_transcript_files(transcript_path)
-                    break
-
                 case _:
                     raise Exception(f'Invalid format type {format_type}')
 
