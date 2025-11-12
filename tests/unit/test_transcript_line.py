@@ -1,5 +1,4 @@
 ﻿import unittest
-from typing import Tuple
 
 from kaldi_training_data_formatter import TranscriptLine
 
@@ -44,7 +43,7 @@ class TestTranscriptLine(unittest.TestCase):
                 self.assertTrue(actual)
 
     def test_eq_when_other_does_not_have_same_properties_returns_false(self):
-        param_list: list[Tuple[str, str]] = [
+        param_list: list[tuple[str, str]] = [
             # line, (other_)line
             ('0', '1'),
             ('0 hello world', '1 fire fire light the fire'),
@@ -91,7 +90,7 @@ class TestTranscriptLine(unittest.TestCase):
             TranscriptLine.from_line(line)
 
     def test_from_line_given_valid_line_returns_expected(self):
-        param_list: list[Tuple[str, str, list[str]]] = [
+        param_list: list[tuple[str, str, list[str]]] = [
             # line, (expected_)id, (expected_)text
             ('0', '0', []),
             ('0 hello world', '0', ['hello', 'world']),
@@ -110,7 +109,7 @@ class TestTranscriptLine(unittest.TestCase):
                     self.assertListEqual(expected_text, actual.text, 'Actual text does not equal expected')
 
     def test_str_returns_expected(self):
-        param_list: list[Tuple[str, list[str], str]] = [
+        param_list: list[tuple[str, list[str], str]] = [
             # (line_)id, text, expected
             ('0', ['hello', 'world'], '0 hello world'),
         ]

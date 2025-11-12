@@ -1,6 +1,5 @@
 ﻿import os
 import unittest
-from typing import Tuple
 
 from case.file_test_case import FileTestCase
 from kaldi_training_data_formatter import LexiconCompiler
@@ -14,7 +13,7 @@ class TestLexiconCompiler(FileTestCase):
         cls.output_path: str = os.path.join(cls.resources_path, 'output')
 
     def test_save_lexicon_when_all_vocabulary_has_phones_creates_expected_output_file(self):
-        param_list: list[Tuple[str, list[str], str]] = [
+        param_list: list[tuple[str, list[str], str]] = [
             # lexicon, vocabulary, expected
             ('test-import-lexicon.txt', [
                 'a',
@@ -83,7 +82,7 @@ class TestLexiconCompiler(FileTestCase):
                                      'Assert that lexicon in actual file equals expected file')
 
     def test_save_lexicon_when_vocabulary_has_no_phones_creates_expected_output_file(self):
-        param_list: list[Tuple[list[str], str]] = [
+        param_list: list[tuple[list[str], str]] = [
             # vocabulary, expected
             ([
                  'a',

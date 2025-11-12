@@ -1,12 +1,11 @@
 ﻿import unittest
-from typing import Tuple
 
 from kaldi_training_data_formatter import Chapter
 
 
 class TestChapter(unittest.TestCase):
     def test_str_returns_expected(self):
-        param_list: list[Tuple[int, int, str, int, str, str]] = [
+        param_list: list[tuple[int, int, str, int, str, str]] = [
             # (chapter_)id, project_id, song_id, speaker_id, subset, expected
             (1, 1, 'song', 1, 'subset', '1 | 1 | subset | 1 | song'),
             (100, 1, 'CVRD-438', 1, 'train-clean', '100 | 1 | train-clean | 1 | CVRD-438'),
@@ -50,7 +49,7 @@ class TestChapter(unittest.TestCase):
         self.assertTrue(actual)
 
     def test_ge_for_given_ids_returns_expected(self):
-        param_list: list[Tuple[int, int, bool]] = [
+        param_list: list[tuple[int, int, bool]] = [
             # (self_)id, (other_)id, expected
             (0, 0, True),
             (1, 0, True),
@@ -92,7 +91,7 @@ class TestChapter(unittest.TestCase):
         self.assertFalse(actual)
 
     def test_gt_for_given_ids_returns_expected(self):
-        param_list: list[Tuple[int, int, bool]] = [
+        param_list: list[tuple[int, int, bool]] = [
             # (self_)id, (other_)id, expected
             (0, 0, False),
             (1, 0, True),
@@ -134,7 +133,7 @@ class TestChapter(unittest.TestCase):
         self.assertTrue(actual)
 
     def test_le_for_given_ids_returns_expected(self):
-        param_list: list[Tuple[int, int, bool]] = [
+        param_list: list[tuple[int, int, bool]] = [
             # (self_)id, (other_)id, expected
             (0, 0, True),
             (1, 0, False),
@@ -176,7 +175,7 @@ class TestChapter(unittest.TestCase):
         self.assertFalse(actual)
 
     def test_lt_for_given_ids_returns_expected(self):
-        param_list: list[Tuple[int, int, bool]] = [
+        param_list: list[tuple[int, int, bool]] = [
             # (self_)id, (other_)id, expected
             (0, 0, False),
             (1, 0, False),

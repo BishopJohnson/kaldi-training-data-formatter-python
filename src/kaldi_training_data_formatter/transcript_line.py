@@ -1,7 +1,4 @@
-﻿from typing import Tuple
-
-
-class TranscriptLine:
+﻿class TranscriptLine:
     def __init__(self, line_id: str, text: list[str]):
         self.__id: str = line_id
         self.__text: list[str] = text
@@ -39,7 +36,7 @@ class TranscriptLine:
         return ' '.join(str_list)
 
     @staticmethod
-    def __parse_line(line: str) -> Tuple[str, list[str]]:
+    def __parse_line(line: str) -> tuple[str, list[str]]:
         data: list[str] = [
             s.strip('\n\r\t ')
             for s in line.split(' ')
