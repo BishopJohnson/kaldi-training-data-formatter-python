@@ -14,25 +14,27 @@ class FilesUtil:
         Transcript = 1
 
     @staticmethod
-    def format_audio_files(root: str) -> None:
-        FilesUtil.__format_files(root, FilesUtil.__FormatType.Audio)
+    def format_audio_files(root: str, verbose: bool = False) -> None:
+        FilesUtil.__format_files(root, FilesUtil.__FormatType.Audio, verbose=verbose)
 
     @staticmethod
-    def format_transcript_files(root: str) -> None:
-        FilesUtil.__format_files(root, FilesUtil.__FormatType.Transcript)
+    def format_transcript_files(root: str, verbose: bool = False) -> None:
+        FilesUtil.__format_files(root, FilesUtil.__FormatType.Transcript, verbose=verbose)
 
     @staticmethod
-    def __format_audio_files_for_transcript(transcript_path: str) -> None:
+    def __format_audio_files_for_transcript(transcript_path: str, verbose: bool = False) -> None:
         directory: str = os.path.dirname(transcript_path)
 
         if not directory:
-            print("Transcript directory is not valid")
+            if verbose:
+                print(f'Directory is not valid for transcript: "{transcript_path}"')
             return
 
         user_id, project_id = ProjectUtil.get_user_and_project_id(transcript_path)
 
         if not user_id or not project_id:
-            print('user_id or project_id are null or empty')
+            if verbose:
+                print(f'user_id or project_id are null or empty for transcript: "{transcript_path}"')
             return
 
         # Format audio files in directory
@@ -72,14 +74,13 @@ class FilesUtil:
             if flac_filename in files or wav_filename in files:
                 unobserved_ids.remove(el)
 
-        if len(unobserved_ids) > 0:
+        if len(unobserved_ids) > 0 and verbose:
             print(f'Transcripts in {user_id}-{project_id} with unobserved files: [{", ".join(unobserved_ids)}]')
 
     @staticmethod
-    def __format_files(root: str, format_type: __FormatType) -> None:
+    def __format_files(root: str, format_type: __FormatType, verbose: bool = False) -> None:
         if not os.path.isdir(root):
-            print(f'Given root is not a directory: "{root}"')
-            return
+            raise Exception(f'Given root is not a directory: "{root}"')
 
         directories_queue: list[str] = [root]
 
@@ -93,14 +94,14 @@ class FilesUtil:
 
             match format_type:
                 case FilesUtil.__FormatType.Audio:
-                    FilesUtil.__format_audio_files_for_transcript(transcript_path)
+                    FilesUtil.__format_audio_files_for_transcript(transcript_path, verbose=verbose)
                 case FilesUtil.__FormatType.Transcript:
-                    FilesUtil.__format_transcript_files(transcript_path)
+                    FilesUtil.__format_transcript_files(transcript_path, verbose=verbose)
                 case _:
                     raise Exception(f'Invalid format type {format_type}')
 
     @staticmethod
-    def __format_transcript_files(transcript_path: str) -> None:
+    def __format_transcript_files(transcript_path: str, verbose: bool = False) -> None:
         directory: str = os.path.dirname(transcript_path)
 
         if not directory:
@@ -118,7 +119,9 @@ class FilesUtil:
             old_path: str = transcript_path
             transcript_path = os.path.join(directory, filename)
             os.rename(old_path, transcript_path)
-            print(f'Renamed transcript file at "{directory}" to "{filename}"')
+
+            if verbose:
+                print(f'Renamed transcript file at "{directory}" to "{filename}"')
 
         # Format the lines of the file
         old_lines: dict[str, TranscriptLine] = FilesUtil.__get_transcript_lines(transcript_path)
@@ -146,7 +149,9 @@ class FilesUtil:
 
         writer: TranscriptWriter = TranscriptWriter(directory)
         writer.write_transcript(filename, new_lines)
-        print(f'Reformatted transcript file "{transcript_path}"')
+
+        if verbose:
+            print(f'Reformatted transcript file "{transcript_path}"')
 
     @staticmethod
     def __get_transcript_lines(transcript_path: str) -> dict[str, TranscriptLine]:
