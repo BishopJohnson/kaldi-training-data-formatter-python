@@ -24,6 +24,7 @@ class App:
         self.__lexicon_compiler: LexiconCompiler = LexiconCompiler.from_root(self.__root,
                                                                              True,
                                                                              import_name=args.import_lexicon)
+        self.__lexicon_compiler.verbose = self.__verbose
         self.__vocab_compiler: VocabCompiler = VocabCompiler.from_root(self.__root)
 
     def run(self) -> int:
