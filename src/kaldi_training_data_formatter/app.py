@@ -26,6 +26,7 @@ class App:
                                                                              import_name=args.import_lexicon)
         self.__lexicon_compiler.verbose = self.__verbose
         self.__vocab_compiler: VocabCompiler = VocabCompiler.from_root(self.__root)
+        self.__vocab_compiler.verbose = self.__verbose
 
     def run(self) -> int:
         audio_root: str = os.path.join(self.__root, 'audio')
