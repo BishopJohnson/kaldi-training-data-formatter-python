@@ -21,9 +21,8 @@ class App:
 
         self.__root: str = args.root if args.root else os.getcwd()
         self.__verbose: bool = args.verbose
-        self.__lexicon_compiler: LexiconCompiler = LexiconCompiler.from_root(self.__root,
-                                                                             True,
-                                                                             import_name=args.import_lexicon)
+        self.__lexicon_compiler: LexiconCompiler = LexiconCompiler.from_root(self.__root)
+        self.__lexicon_compiler.set_import_lexicons(args.import_lexicon)
         self.__lexicon_compiler.verbose = self.__verbose
         self.__vocab_compiler: VocabCompiler = VocabCompiler.from_root(self.__root)
         self.__vocab_compiler.verbose = self.__verbose
@@ -35,7 +34,7 @@ class App:
 
         self.__vocab_compiler.read_vocabulary()
         self.__vocab_compiler.save_vocabulary()
-        self.__lexicon_compiler.compile_lexicon(self.__vocab_compiler.vocabulary)
+        self.__lexicon_compiler.compile_lexicon(self.__vocab_compiler.vocabulary, use_existing=True)
         self.__lexicon_compiler.save_lexicon()
 
         FilesUtil.format_audio_files(audio_root, verbose=self.__verbose)

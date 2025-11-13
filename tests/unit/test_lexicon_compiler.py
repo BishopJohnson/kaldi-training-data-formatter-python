@@ -66,10 +66,9 @@ class TestLexiconCompiler(FileTestCase):
 
                 # Arrange (cont.)
                 class_under_test: LexiconCompiler = LexiconCompiler(self.__class__.input_path,
-                                                                    self.__class__.output_path,
-                                                                    use_existing=False,
-                                                                    import_name=lexicon)
-                class_under_test.compile_lexicon(vocabulary)
+                                                                    self.__class__.output_path)
+                class_under_test.set_import_lexicons(lexicon)
+                class_under_test.compile_lexicon(vocabulary, use_existing=False)
 
                 # Act
                 class_under_test.save_lexicon()
@@ -132,9 +131,8 @@ class TestLexiconCompiler(FileTestCase):
 
                 # Arrange (cont.)
                 class_under_test: LexiconCompiler = LexiconCompiler(self.__class__.input_path,
-                                                                    self.__class__.output_path,
-                                                                    use_existing=False)
-                class_under_test.compile_lexicon(vocabulary)
+                                                                    self.__class__.output_path)
+                class_under_test.compile_lexicon(vocabulary, use_existing=False)
 
                 # Act
                 class_under_test.save_lexicon()
