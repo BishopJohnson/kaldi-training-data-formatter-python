@@ -11,10 +11,19 @@ class VocabCompiler:
         self.__input_root: Final[str] = input_root
         self.__output_root: Final[str] = output_root
         self.__vocabulary: Final[set[str]] = set()
+        self.__verbose: bool = False
 
     @classmethod
     def from_root(cls, root: str):
         return cls(root, root)
+
+    @property
+    def verbose(self) -> bool:
+        return self.__verbose
+
+    @verbose.setter
+    def verbose(self, value: bool) -> None:
+        self.__verbose = value
 
     @property
     def vocabulary(self) -> set[str]:
@@ -33,7 +42,8 @@ class VocabCompiler:
             directory: str = directory_queue.pop()
 
             if not os.path.isdir(directory):
-                print(f'Could not find directory: "{directory}"')
+                if self.verbose:
+                    print(f'Could not find directory: "{directory}"')
                 continue
 
             entries: list[str] = [os.path.join(directory, f) for f in os.listdir(directory)]

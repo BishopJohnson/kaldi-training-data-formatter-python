@@ -11,6 +11,7 @@ class LexiconCompiler:
         self.__use_existing: Final[bool] = use_existing
         self.__import_name: Final[str | None] = import_name
         self.__lexicon: Final[dict[str, set[str]]] = {}
+        self.__verbose: bool = False
 
     @classmethod
     def from_root(cls, root: str, use_existing: bool = False, import_name: str | None = None):
@@ -23,6 +24,14 @@ class LexiconCompiler:
     @property
     def lexicon(self) -> dict[str, set[str]]:
         return self.__lexicon
+
+    @property
+    def verbose(self) -> bool:
+        return self.__verbose
+
+    @verbose.setter
+    def verbose(self, value: bool) -> None:
+        self.__verbose = value
 
     def compile_lexicon(self, vocabulary: Collection[str]) -> None:
         temp_lexicon: dict[str, set[str]] = {}
@@ -54,6 +63,8 @@ class LexiconCompiler:
             os.makedirs(self.__output_root, exist_ok=True)
 
             with open(filepath, mode='w', encoding='utf-8') as f:  # Never write lexicon with BOM
+                line_count: int = 1
+
                 for word in words:
                     phones: list[str] = []
                     phones += self.__lexicon[word]
@@ -65,11 +76,16 @@ class LexiconCompiler:
                             f.write(' ')
                             f.write(phone)
                             f.write('\n')
+
+                            line_count += 1
                     else:
                         f.write(word)
                         f.write(' ')
                         f.write('<<<<<!!! NO PHONES !!!>>>>>')
                         f.write('\n')
+                        print(f'Wrote word "{word}" with no phones on line {line_count} to lexicon')
+
+                        line_count += 1
         except Exception as e:
             print('Error while saving lexicon file: ' + str(e))
 
@@ -91,8 +107,7 @@ class LexiconCompiler:
                     line_num += 1
 
                     if len(elements) < 2:
-                        print(f'Too few elements on line {line_num} in lexicon: "{path}"')
-                        continue
+                        raise Exception(f'Too few elements on line {line_num} in lexicon: "{path}"')
 
                     word: str = elements[0].lower()
                     phones: str = ' '.join(elements[1:]).upper()
