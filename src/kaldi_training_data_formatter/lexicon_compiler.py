@@ -63,6 +63,8 @@ class LexiconCompiler:
             os.makedirs(self.__output_root, exist_ok=True)
 
             with open(filepath, mode='w', encoding='utf-8') as f:  # Never write lexicon with BOM
+                line_count: int = 1
+
                 for word in words:
                     phones: list[str] = []
                     phones += self.__lexicon[word]
@@ -74,11 +76,16 @@ class LexiconCompiler:
                             f.write(' ')
                             f.write(phone)
                             f.write('\n')
+
+                            line_count += 1
                     else:
                         f.write(word)
                         f.write(' ')
                         f.write('<<<<<!!! NO PHONES !!!>>>>>')
                         f.write('\n')
+                        print(f'Wrote word "{word}" with no phones on line {line_count} to lexicon')
+
+                        line_count += 1
         except Exception as e:
             print('Error while saving lexicon file: ' + str(e))
 
@@ -101,7 +108,6 @@ class LexiconCompiler:
 
                     if len(elements) < 2:
                         raise Exception(f'Too few elements on line {line_num} in lexicon: "{path}"')
-                        continue
 
                     word: str = elements[0].lower()
                     phones: str = ' '.join(elements[1:]).upper()
