@@ -20,6 +20,7 @@ class App:
         args = parser.parse_args()
 
         self.__root: str = args.root if args.root else os.getcwd()
+        self.__verbose: bool = args.verbose
         self.__lexicon_compiler: LexiconCompiler = LexiconCompiler.from_root(self.__root,
                                                                              True,
                                                                              import_name=args.import_lexicon)
