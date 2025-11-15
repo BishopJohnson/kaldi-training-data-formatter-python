@@ -4,6 +4,7 @@ from typing import Final, Collection
 
 class LexiconCompiler:
     LEXICON_FILENAME: Final[str] = 'lexicon.txt'
+    __NO_PHONES_VALUE: Final[str] = '<<<<<!!! NO PHONES !!!>>>>>'
 
     def __init__(self, input_root: str, output_root: str):
         self.__input_root: Final[str] = input_root
@@ -35,12 +36,18 @@ class LexiconCompiler:
         # Read from imported lexicon
         for lexicon in self.__import_lexicons:
             path: str = os.path.join(self.__input_root, lexicon)
-            LexiconCompiler.__read_lexicon(path, temp_lexicon)
+
+            if os.path.isfile(path):
+                LexiconCompiler.__read_lexicon(path, temp_lexicon)
+            else:
+                print(f'Could not find import lexicon at path: "{path}"')
 
         # Read from existing lexicon
         if use_existing:
             path: str = os.path.join(self.__input_root, LexiconCompiler.LEXICON_FILENAME)
-            LexiconCompiler.__read_lexicon(path, temp_lexicon)
+
+            if os.path.isfile(path):
+                LexiconCompiler.__read_lexicon(path, temp_lexicon)
 
         # Read vocabulary
         for vocab in vocabulary:
@@ -76,7 +83,7 @@ class LexiconCompiler:
                     else:
                         f.write(word)
                         f.write(' ')
-                        f.write('<<<<<!!! NO PHONES !!!>>>>>')
+                        f.write(LexiconCompiler.__NO_PHONES_VALUE)
                         f.write('\n')
                         print(f'Wrote word "{word}" with no phones on line {line_count} to lexicon')
 
@@ -84,19 +91,17 @@ class LexiconCompiler:
         except Exception as e:
             print('Error while saving lexicon file: ' + str(e))
 
-    def set_import_lexicons(self, lexicons: Collection[str] | str | None) -> None:
+    def set_import_lexicon(self, lexicon: str | None) -> None:
+        self.set_import_lexicons([lexicon])
+
+    def set_import_lexicons(self, lexicons: list[str] | None) -> None:
         self.__import_lexicons.clear()
 
-        if type(lexicons) is str:
-            self.__import_lexicons.append(lexicons)
-        elif type(lexicons) is Collection[str]:
+        if lexicons:
             self.__import_lexicons.extend(lexicons)
 
     @staticmethod
     def __read_lexicon(path: str, write_lexicon: dict[str, set[str]]) -> None:
-        if not os.path.isfile(path):
-            return
-
         try:
             with open(path, mode='r', encoding='utf-8-sig') as f:
                 line_num: int = 0
@@ -112,8 +117,12 @@ class LexiconCompiler:
                     if len(elements) < 2:
                         print(f'Too few elements on line {line_num} in lexicon: "{path}"')
 
-                    word: str = elements[0].lower()
                     phones: str = ' '.join(elements[1:]).upper()
+
+                    if phones == LexiconCompiler.__NO_PHONES_VALUE:
+                        continue
+
+                    word: str = elements[0].lower()
                     existing_phones: set[str]
 
                     if word in write_lexicon:
