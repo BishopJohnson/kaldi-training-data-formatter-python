@@ -1,5 +1,6 @@
 ﻿import argparse
 import os.path
+import traceback
 
 from kaldi_training_data_formatter import VocabCompiler, FilesUtil, LexiconCompiler
 
@@ -7,9 +8,10 @@ from kaldi_training_data_formatter import VocabCompiler, FilesUtil, LexiconCompi
 class App:
     def __init__(self):
         parser = argparse.ArgumentParser()
-        parser.add_argument('--import-lexicon',
+        parser.add_argument('--import-lexicons',
                             type=str,
-                            help='The filename of the lexicon to import phones from.')
+                            nargs='+',
+                            help='The filename(s) of the lexicon(s) to import phones from.')
         parser.add_argument('-v',
                             '--verbose',
                             action='store_true')
@@ -22,24 +24,28 @@ class App:
         self.__root: str = args.root if args.root else os.getcwd()
         self.__verbose: bool = args.verbose
         self.__lexicon_compiler: LexiconCompiler = LexiconCompiler.from_root(self.__root)
-        self.__lexicon_compiler.set_import_lexicons(args.import_lexicon)
+        self.__lexicon_compiler.set_import_lexicons(args.import_lexicons)
         self.__lexicon_compiler.verbose = self.__verbose
         self.__vocab_compiler: VocabCompiler = VocabCompiler.from_root(self.__root)
         self.__vocab_compiler.verbose = self.__verbose
 
     def run(self) -> int:
-        audio_root: str = os.path.join(self.__root, 'audio')
+        try:
+            audio_root: str = os.path.join(self.__root, 'audio')
 
-        FilesUtil.format_transcript_files(audio_root, verbose=self.__verbose)
+            FilesUtil.format_transcript_files(audio_root, verbose=self.__verbose)
 
-        self.__vocab_compiler.read_vocabulary()
-        self.__vocab_compiler.save_vocabulary()
-        self.__lexicon_compiler.compile_lexicon(self.__vocab_compiler.vocabulary, use_existing=True)
-        self.__lexicon_compiler.save_lexicon()
+            self.__vocab_compiler.read_vocabulary()
+            self.__vocab_compiler.save_vocabulary()
+            self.__lexicon_compiler.compile_lexicon(self.__vocab_compiler.vocabulary, use_existing=True)
+            self.__lexicon_compiler.save_lexicon()
 
-        FilesUtil.format_audio_files(audio_root, verbose=self.__verbose)
+            FilesUtil.format_audio_files(audio_root, verbose=self.__verbose)
 
-        return 0
+            return 0
+        except Exception:
+            print(traceback.format_exc())
+            return -1
 
 
 def cli() -> int:
