@@ -131,7 +131,7 @@ class FilesUtil:
         do_formatting: bool = False
 
         for line_id, line in old_lines.items():
-            if line_id.startswith(prefix) and (line_id[prefix_length:len(line_id) - prefix_length - 1]).isdigit():
+            if line_id.startswith(prefix) and (line_id[prefix_length:]).isdigit():
                 new_lines.append(line)
                 continue
 
