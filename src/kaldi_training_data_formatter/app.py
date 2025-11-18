@@ -8,39 +8,56 @@ from kaldi_training_data_formatter import VocabCompiler, FilesUtil, LexiconCompi
 class App:
     def __init__(self):
         parser = argparse.ArgumentParser()
+        parser.add_argument('-c',
+                            '--compile',
+                            action='store_true')
+        parser.add_argument('-f',
+                            '--format',
+                            action='store_true')
+        parser.add_argument('-s',
+                            '--sort',
+                            action='store_true')
         parser.add_argument('--import-lexicons',
                             type=str,
                             nargs='+',
                             help='The filename(s) of the lexicon(s) to import phones from.')
-        parser.add_argument('-v',
-                            '--verbose',
+        parser.add_argument('--verbose',
                             action='store_true')
-        parser.add_argument('-r',
-                            '--root',
+        parser.add_argument('--root',
                             type=str,
                             help='The root directory to run the app in.')
-        args = parser.parse_args()
-
-        self.__root: str = args.root if args.root else os.getcwd()
-        self.__verbose: bool = args.verbose
-        self.__lexicon_compiler: LexiconCompiler = LexiconCompiler.from_root(self.__root)
-        self.__lexicon_compiler.set_import_lexicons(args.import_lexicons)
-        self.__lexicon_compiler.verbose = self.__verbose
-        self.__vocab_compiler: VocabCompiler = VocabCompiler.from_root(self.__root)
-        self.__vocab_compiler.verbose = self.__verbose
+        self.__args = parser.parse_args()
 
     def run(self) -> int:
         try:
-            audio_root: str = os.path.join(self.__root, 'audio')
+            root: str = self.__args.root if self.__args.root else os.getcwd()
+            audio_root: str = os.path.join(root, 'audio')
+            verbose: bool = self.__args.verbose
 
-            FilesUtil.format_transcript_files(audio_root, verbose=self.__verbose)
+            if self.__args.compile:  # Compile vocabulary and lexicon
+                if self.__args.format:
+                    print('Formatting transcript files')
+                    FilesUtil.format_transcript_files(audio_root, verbose=verbose)
 
-            self.__vocab_compiler.read_vocabulary()
-            self.__vocab_compiler.save_vocabulary()
-            self.__lexicon_compiler.compile_lexicon(self.__vocab_compiler.vocabulary, use_existing=True)
-            self.__lexicon_compiler.save_lexicon()
+                print('Compiling vocabulary and lexicon files')
+                vocab_compiler: VocabCompiler = VocabCompiler.from_root(root)
+                vocab_compiler.verbose = verbose
+                vocab_compiler.read_vocabulary()
+                vocab_compiler.save_vocabulary()
+
+                lexicon_compiler: LexiconCompiler = LexiconCompiler.from_root(root)
+                lexicon_compiler.verbose = verbose
+                lexicon_compiler.set_import_lexicons(self.__args.import_lexicons)
+                lexicon_compiler.compile_lexicon(vocab_compiler.vocabulary, use_existing=True)
+                lexicon_compiler.save_lexicon()
 
             FilesUtil.format_audio_files(audio_root, verbose=self.__verbose)
+            if self.__args.format:
+                print('Formatting audio files')
+                FilesUtil.format_audio_files(audio_root, verbose=verbose)
+
+            if self.__args.sort:
+                print('Sorting data into subsets')
 
             return 0
         except Exception:
