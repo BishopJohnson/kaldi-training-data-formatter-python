@@ -102,12 +102,12 @@ class SubsetSorter:
             if os.path.isdir(unsorted_input_path):
                 shutil.move(unsorted_input_path, sorted_output_path)
 
-                if not unsorted_input_path == sorted_output_path:
+                if not sorted_output_path.startswith(unsorted_input_path):
                     shutil.rmtree(unsorted_input_path)
             elif os.path.isdir(sorted_input_path):
                 shutil.move(sorted_input_path, sorted_output_path)
 
-                if not sorted_input_path == sorted_output_path:
+                if not sorted_output_path.startswith(sorted_input_path):
                     shutil.rmtree(sorted_input_path)
             else:
                 raise Exception(f'No input data for speaker {speaker.speaker_id}')
