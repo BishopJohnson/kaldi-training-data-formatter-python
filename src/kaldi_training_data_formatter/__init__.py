@@ -13,6 +13,7 @@ from .transcript_line import TranscriptLine
 from .project_util import ProjectUtil
 
 # Models
+from .speaker import Speaker
 from .chapter import Chapter  # Depends on speaker
 
 # Depends on the above
