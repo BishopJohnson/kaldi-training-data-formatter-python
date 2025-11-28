@@ -21,6 +21,7 @@ from .abstract_file_reader import AbstractFileReader
 
 # Depends on the above
 from .speakers_reader import SpeakersReader
+from .speakers_writer import SpeakersWriter
 from .transcript_reader import TranscriptReader
 
 # Depends on the above
