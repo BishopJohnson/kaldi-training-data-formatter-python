@@ -18,6 +18,9 @@ from .chapter import Chapter  # Depends on speaker
 
 # Depends on the above
 from .abstract_file_reader import AbstractFileReader
+
+# Depends on the above
+from .speakers_reader import SpeakersReader
 from .transcript_reader import TranscriptReader
 
 # Depends on the above
