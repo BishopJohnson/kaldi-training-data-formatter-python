@@ -1,14 +1,24 @@
 ﻿class Chapter:
     def __init__(self, init_id: int):
         self.__id: int = init_id
+        self.__minutes: float = 0.0
         self.__project_id: int = 0
         self.__song_id: str | None = None
+        self.__song_title: str | None = None
         self.__speaker_id: int = 0
         self.__subset: str | None = None
 
     @property
     def id(self) -> int:
         return self.__id
+
+    @property
+    def minutes(self) -> float:
+        return self.__minutes
+
+    @minutes.setter
+    def minutes(self, value: float) -> None:
+        self.__minutes = value
 
     @property
     def project_id(self) -> int:
@@ -31,6 +41,14 @@
         del self.__song_id
 
     @property
+    def song_title(self) -> str | None:
+        return self.__song_title
+
+    @song_title.setter
+    def song_title(self, value: str) -> None:
+        self.__song_title = value
+
+    @property
     def speaker_id(self) -> int:
         return self.__speaker_id
 
@@ -45,6 +63,24 @@
     @subset.setter
     def subset(self, value: str) -> None:
         self.__subset = value
+
+    def __eq__(self, other) -> bool:
+        if other is None:
+            return False
+
+        if self is other:
+            return True
+
+        if not isinstance(other, Chapter):
+            return False
+
+        return (self.id == other.id
+                and self.project_id == other.project_id
+                and ((self.song_id is None and other.song_id is None)
+                     or (self.song_id is not None and self.song_id == other.song_id))
+                and self.speaker_id == other.speaker_id
+                and ((self.subset is None and other.subset is None)
+                     or (self.subset is not None and self.subset == other.subset)))
 
     def __ge__(self, other) -> bool:
         if other is None:
@@ -69,24 +105,6 @@
             raise NotImplemented
 
         return self.id > other.id
-
-    def __eq__(self, other) -> bool:
-        if other is None:
-            return False
-
-        if self is other:
-            return True
-
-        if not isinstance(other, Chapter):
-            return False
-
-        return (self.id == other.id
-                and self.project_id == other.project_id
-                and ((self.song_id is None and other.song_id is None)
-                     or (self.song_id is not None and self.song_id == other.song_id))
-                and self.speaker_id == other.speaker_id
-                and ((self.subset is None and other.subset is None)
-                     or (self.subset is not None and self.subset == other.subset)))
 
     def __hash__(self) -> int:
         return hash(self.id)
@@ -119,9 +137,11 @@
         str_list: list[str] = [
             str(self.id),
             str(self.speaker_id),
+            str(self.minutes),
             str(self.subset),
             str(self.project_id),
             str(self.song_id),
+            str(self.song_title)
         ]
 
         return ' | '.join(str_list)
