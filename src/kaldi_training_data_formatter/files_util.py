@@ -19,6 +19,25 @@ class FilesUtil:
         FilesUtil.__format_files(root, FilesUtil.__FormatType.Transcript, verbose=verbose)
 
     @staticmethod
+    def get_transcript_file_paths(root: str) -> list[str]:
+        paths: list[str] = []
+        directories: list[str] = [root]
+
+        while len(directories) > 0:
+            directory: str = directories.pop()
+
+            if not os.path.isdir(directory):
+                continue
+
+            for f in os.scandir(directory):
+                if f.is_dir():
+                    directories.append(f.path)
+                elif f.is_file() and f.path.endswith(TRANSCRIPT_EXT):
+                    paths.append(f.path)
+
+        return paths
+
+    @staticmethod
     def __format_audio_files_for_transcript(transcript_path: str, verbose: bool = False) -> None:
         directory: str = os.path.dirname(transcript_path)
 
