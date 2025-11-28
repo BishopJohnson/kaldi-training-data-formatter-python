@@ -1,14 +1,11 @@
 ﻿import os.path
 from enum import Enum
-from typing import Final
 
-from kaldi_training_data_formatter import TranscriptLine, TranscriptReader, ProjectUtil
+from kaldi_training_data_formatter import TranscriptLine, TranscriptReader, ProjectUtil, TRANSCRIPT_EXT
 from kaldi_training_data_formatter.transcript_writer import TranscriptWriter
 
 
 class FilesUtil:
-    __EXTENSION: Final[str] = '.trans.txt'
-
     class __FormatType(Enum):
         Audio = 0
         Transcript = 1
@@ -112,7 +109,7 @@ class FilesUtil:
         if not user_id or not project_id:
             raise Exception(f'Cannot determine user or project ID from path: "{transcript_path}"')
 
-        filename: str = f'{user_id}-{project_id}{FilesUtil.__EXTENSION}'
+        filename: str = f'{user_id}-{project_id}{TRANSCRIPT_EXT}'
 
         # Rename the transcript file if necessary
         if os.path.exists(transcript_path) and not transcript_path.endswith(filename):
@@ -173,7 +170,7 @@ class FilesUtil:
         files: list[str] = [
             f.path
             for f in os.scandir(directory)
-            if f.is_file() and f.path.endswith(FilesUtil.__EXTENSION)
+            if f.is_file() and f.path.endswith(TRANSCRIPT_EXT)
         ]
 
         if len(files) > 0:

@@ -1,4 +1,14 @@
-﻿# No dependencies
+﻿from typing import Final
+
+AUDIO_DIR_NAME: Final[str] = 'audio'
+CHAPTERS_FILENAME: Final[str] = 'CHAPTERS.TXT'
+LEXICON_FILENAME: Final[str] = 'lexicon.txt'
+NO_PHONES_VALUE: Final[str] = '<<<<<!!! NO PHONES !!!>>>>>'
+SPEAKERS_FILENAME: Final[str] = 'SPEAKERS.TXT'
+TRANSCRIPT_EXT: Final[str] = '.trans.txt'
+VOCAB_FILENAME: Final[str] = 'vocab.txt'
+
+# No dependencies
 from .chapter import Chapter
 from .transcript_line import TranscriptLine
 from .project_util import ProjectUtil
