@@ -1,8 +1,15 @@
 ﻿import os.path
 from typing import Final
 
-from kaldi_training_data_formatter import SpeakersReader, Speaker, SPEAKERS_FILENAME, CHAPTERS_FILENAME, ProjectUtil, \
-    FilesUtil, Chapter, AUDIO_DIR_NAME
+from kaldi_training_data_formatter import \
+    SpeakersReader, \
+    Speaker, \
+    SPEAKERS_FILENAME, \
+    CHAPTERS_FILENAME, \
+    ProjectUtil, \
+    FilesUtil, \
+    Chapter, \
+    AUDIO_DIR_NAME
 
 
 class ChaptersCompiler:
@@ -41,7 +48,6 @@ class ChaptersCompiler:
         for speaker in speakers:
             # Validate speaker directory
             speaker_dir: str = os.path.join(self.__input_root, AUDIO_DIR_NAME, speaker.subset, str(speaker.speaker_id))
-            print(speaker_dir)  # TODO
 
             if not os.path.isdir(speaker_dir):
                 print(f'No such directory for speaker {speaker.speaker_id} at: "{speaker_dir}"')
