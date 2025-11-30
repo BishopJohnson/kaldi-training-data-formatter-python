@@ -1,7 +1,6 @@
 ﻿import os.path
 import random
 import shutil
-from enum import Enum
 from typing import Final
 
 from kaldi_training_data_formatter import Speaker, SpeakersReader, SpeakersWriter, AUDIO_DIR_NAME
@@ -12,16 +11,7 @@ class SubsetSorter:
         def __init__(self):
             self.__input_root: str | None = None
             self.__output_root: str | None = None
-            self.__test_subset_speakers: set[int] = set()
-            self.__train_subset_speakers: set[int] = set()
-
-        def add_test_subset_speaker(self, speaker_id: int):
-            self.__test_subset_speakers.add(speaker_id)
-            return self
-
-        def add_train_subset_speaker(self, speaker_id: int):
-            self.__train_subset_speakers.add(speaker_id)
-            return self
+            self.__test_speakers: float | None
 
         def build(self):
             if self.__input_root is None:
@@ -42,10 +32,6 @@ class SubsetSorter:
         def set_output_root(self, value: str):
             self.__output_root = value
             return self
-
-    class __SubsetType(Enum):
-        Train = 0
-        Test = 1
 
     def __init__(self,
                  input_root: str,
@@ -77,13 +63,29 @@ class SubsetSorter:
                 else:
                     self.__unsorted_speakers.append(speaker)
 
-    def sort_sources(self) -> None:
+    def sort_sources(self, test_speakers: float = 0.0) -> None:
+        # Determine how many speakers to put in test subset
+        test_speakers_count: int = sum(1 for el in self.__sorted_speakers if el.subset == self.__test_dir_name)
+        target_num_of_test_speakers: int
+
+        if test_speakers >= 1.0 and test_speakers.is_integer():
+            target_num_of_test_speakers = int(test_speakers)
+        elif 0.0 <= test_speakers < 1.0:
+            speakers_count: int = len(self.__unsorted_speakers) + len(self.__sorted_speakers)
+            target_num_of_test_speakers = round(speakers_count * test_speakers)
+        else:
+            raise Exception('Value for test_speakers must either be a non-negative integer or a value between (0, 1)')
+
         # Shuffle unsorted speakers and assign them to subsets
         random.shuffle(self.__unsorted_speakers)
 
         for speaker in self.__unsorted_speakers:
-            # TODO: Randomize between train and test with a given ratio of training to testing data
-            speaker.subset = self.__train_dir_name
+            if test_speakers_count < target_num_of_test_speakers:
+                speaker.subset = self.__test_dir_name
+                test_speakers_count += 1
+            else:
+                speaker.subset = self.__train_dir_name
+
             self.__sorted_speakers.append(speaker)
 
         # Reorder sorted speakers by ID

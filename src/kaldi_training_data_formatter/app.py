@@ -32,6 +32,11 @@ class App:
         parser.add_argument('--root',
                             type=str,
                             help='The root directory to run the app in.')
+        parser.add_argument('--test-speakers',
+                            type=float,
+                            help=('The number or ratio of speakers to be used in the test subset.'
+                                  + ' Integers greater than or equal to 1 will specify the number of speakers. '
+                                  + ' Values between [0.0, 1.0) will specify the ratio of speakers.'))
         self.__args = parser.parse_args()
         self.__root: str = self.__args.root if self.__args.root else os.getcwd()
         self.__audio_root: str = os.path.join(self.__root, AUDIO_DIR_NAME)
@@ -95,12 +100,17 @@ class App:
 
     def __sort_subsets(self) -> None:
         print('Sorting data into subsets')
+        test_speakers: float | None = self.__args.test_speakers
         sorter: SubsetSorter = (SubsetSorter.builder()
                                 .set_input_root(self.__root)
                                 .set_output_root(self.__root)
                                 .build())
         sorter.gather_sources()
-        sorter.sort_sources()
+
+        if test_speakers:
+            sorter.sort_sources(test_speakers=self.__args.test_speakers)
+        else:
+            sorter.sort_sources()
 
 
 def cli() -> int:
