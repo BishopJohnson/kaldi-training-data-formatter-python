@@ -96,7 +96,7 @@ class SubsetSorter:
             speaker_id: str = str(speaker.speaker_id)
             unsorted_input_path: str = os.path.join(self.__input_root, AUDIO_DIR_NAME, speaker_id)
             sorted_input_path: str = os.path.join(self.__input_root, AUDIO_DIR_NAME, speaker.subset, speaker_id)
-            sorted_output_path: str = os.path.join(self.__output_root, AUDIO_DIR_NAME, speaker.subset, speaker_id)
+            sorted_output_path: str = os.path.join(self.__output_root, AUDIO_DIR_NAME, speaker.subset)
 
             # Move data to output directory and remove input directory
             os.makedirs(sorted_output_path, exist_ok=True)
