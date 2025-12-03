@@ -2,11 +2,13 @@
 
 AUDIO_DIR_NAME: Final[str] = 'audio'
 CHAPTERS_FILENAME: Final[str] = 'CHAPTERS.TXT'
+FLAC_EXT: str = '.flac'
 LEXICON_FILENAME: Final[str] = 'lexicon.txt'
 NO_PHONES_VALUE: Final[str] = '<<<<<!!! NO PHONES !!!>>>>>'
 SPEAKERS_FILENAME: Final[str] = 'SPEAKERS.TXT'
 TRANSCRIPT_EXT: Final[str] = '.trans.txt'
 VOCAB_FILENAME: Final[str] = 'vocab.txt'
+WAV_EXT: str = '.wav'
 
 # No dependencies
 from .transcript_line import TranscriptLine

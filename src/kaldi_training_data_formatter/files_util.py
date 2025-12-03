@@ -1,7 +1,12 @@
 ﻿import os.path
 from enum import Enum
 
-from kaldi_training_data_formatter import TranscriptLine, TranscriptReader, ProjectUtil, TRANSCRIPT_EXT
+from kaldi_training_data_formatter import TranscriptLine, \
+    TranscriptReader, \
+    ProjectUtil, \
+    TRANSCRIPT_EXT, \
+    FLAC_EXT, \
+    WAV_EXT
 from kaldi_training_data_formatter.transcript_writer import TranscriptWriter
 
 
@@ -44,6 +49,7 @@ class FilesUtil:
         if not directory:
             if verbose:
                 print(f'Directory is not valid for transcript: "{transcript_path}"')
+
             return
 
         user_id, project_id = ProjectUtil.get_user_and_project_id(transcript_path)
@@ -51,16 +57,15 @@ class FilesUtil:
         if not user_id or not project_id:
             if verbose:
                 print(f'user_id or project_id are null or empty for transcript: "{transcript_path}"')
+
             return
 
         # Format audio files in directory
-        flac_ext: str = '.flac'
-        wav_ext: str = '.wav'
         files: set[str] = set()
         files.update([
             f.path
             for f in os.scandir(directory)
-            if f.path.endswith(flac_ext) or f.path.endswith(wav_ext)
+            if f.path.endswith(FLAC_EXT) or f.path.endswith(WAV_EXT)
         ])
         unobserved_ids: set[str] = set()
         unobserved_ids.update(FilesUtil.__get_transcript_lines(transcript_path).keys())
@@ -84,8 +89,8 @@ class FilesUtil:
         unobserved_ids_list += unobserved_ids
 
         for el in unobserved_ids_list:
-            flac_filename: str = os.path.join(directory, f'{el}{flac_ext}')
-            wav_filename: str = os.path.join(directory, f'{el}{wav_ext}')
+            flac_filename: str = os.path.join(directory, f'{el}{FLAC_EXT}')
+            wav_filename: str = os.path.join(directory, f'{el}{WAV_EXT}')
 
             if flac_filename in files or wav_filename in files:
                 unobserved_ids.remove(el)
