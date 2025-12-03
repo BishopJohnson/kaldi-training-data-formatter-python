@@ -44,7 +44,7 @@ class FilesUtil:
 
     @staticmethod
     def has_all_audio_files_for_transcript(transcript_path: str, verbose: bool = False) -> bool:
-        directory: str = os.path.dirname(transcript_path)
+        directory, _ = os.path.split(transcript_path)
 
         if not directory:
             if verbose:
@@ -60,6 +60,9 @@ class FilesUtil:
             line_wav_path: str = line_path + WAV_EXT
 
             if not os.path.isfile(line_flac_path) and not os.path.isfile(line_wav_path):
+                if verbose:
+                    print(f'No audio file for transcript line at: {line_path}.*')
+
                 return False
 
         return True

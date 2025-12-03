@@ -135,14 +135,11 @@ class App:
                 transcript_path: str = speaker_transcripts[transcript_idx]
 
                 # Remove chapter directory if not all audio files are present
-                if FilesUtil.has_all_audio_files_for_transcript(transcript_path):
+                if FilesUtil.has_all_audio_files_for_transcript(transcript_path, verbose=self.__verbose):
                     continue
 
                 directory: str = os.path.join(speaker_path, os.path.dirname(transcript_path))
                 shutil.rmtree(directory)
-
-                del speaker_transcripts[transcript_idx]
-                transcript_idx -= 1
 
                 if self.__verbose:
                     print(f'Removed empty chapters directory: {directory}')
