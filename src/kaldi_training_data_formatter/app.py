@@ -123,7 +123,7 @@ class App:
         print('Validating speaker chapters')
         speakers: list[Speaker]
 
-        with SpeakersReader(self.__audio_root) as reader:
+        with SpeakersReader(self.__root) as reader:
             speakers = reader.read_all_speakers()
 
         for speaker_idx in range(len(speakers)):
