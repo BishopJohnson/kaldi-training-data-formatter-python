@@ -120,6 +120,7 @@ class App:
             sorter.sort_sources()
 
     def __validate_speaker_chapters(self) -> None:
+        print('Validating speaker chapters')
         speakers: list[Speaker]
 
         with SpeakersReader(self.__audio_root) as reader:
@@ -142,6 +143,9 @@ class App:
 
                 del speaker_transcripts[transcript_idx]
                 transcript_idx -= 1
+
+                if self.__verbose:
+                    print(f'Removed empty chapters directory: {directory}')
 
 
 def cli() -> int:
