@@ -1,5 +1,6 @@
 ﻿import argparse
 import os.path
+import shutil
 import traceback
 
 from kaldi_training_data_formatter import \
@@ -8,7 +9,9 @@ from kaldi_training_data_formatter import \
     LexiconCompiler, \
     SubsetSorter, \
     ChaptersCompiler, \
-    AUDIO_DIR_NAME
+    AUDIO_DIR_NAME, \
+    SpeakersReader, \
+    Speaker
 
 
 class App:
@@ -22,6 +25,9 @@ class App:
                             action='store_true')
         parser.add_argument('-s',
                             '--sort',
+                            action='store_true')
+        parser.add_argument('-v',
+                            '--validate',
                             action='store_true')
         parser.add_argument('--import-lexicons',
                             type=str,
@@ -44,27 +50,28 @@ class App:
 
     def run(self) -> int:
         try:
-            if self.__args.compile:
-                if self.__args.format:
-                    self.__format_transcript_files()
+            compile_flag: bool | None = self.__args.compile
+            format_flag: bool | None = self.__args.format
+            sort_flag: bool | None = self.__args.sort
+            validate_flag: bool | None = self.__args.validate
 
+            if format_flag:
+                self.__format_transcript_files()
+
+            if compile_flag:
                 self.__compile_lexicon_and_vocab()
 
-                if self.__args.format:
-                    self.__format_audio_files()
-
-                if self.__args.sort:
-                    self.__sort_subsets()
-
-                self.__compile_chapters()
-            elif self.__args.format:
-                self.__format_transcript_files()
+            if format_flag:
                 self.__format_audio_files()
 
-                if self.__args.sort:
-                    self.__sort_subsets()
-            elif self.__args.sort:
+            if sort_flag:
                 self.__sort_subsets()
+
+            if validate_flag:
+                self.__validate_speaker_chapters()
+
+            if compile_flag:
+                self.__compile_chapters()
 
             return 0
         except Exception:
@@ -111,6 +118,30 @@ class App:
             sorter.sort_sources(test_speakers=self.__args.test_speakers)
         else:
             sorter.sort_sources()
+
+    def __validate_speaker_chapters(self) -> None:
+        speakers: list[Speaker]
+
+        with SpeakersReader(self.__audio_root) as reader:
+            speakers = reader.read_all_speakers()
+
+        for speaker_idx in range(len(speakers)):
+            speaker: Speaker = speakers[speaker_idx]
+            speaker_path: str = os.path.join(self.__audio_root, speaker.subset, str(speaker.speaker_id))
+            speaker_transcripts: list[str] = FilesUtil.get_transcript_file_paths(speaker_path)
+
+            for transcript_idx in range(len(speaker_transcripts)):
+                transcript_path: str = speaker_transcripts[transcript_idx]
+
+                # Remove chapter directory if not all audio files are present
+                if FilesUtil.has_all_audio_files_for_transcript(transcript_path):
+                    continue
+
+                directory: str = os.path.join(speaker_path, os.path.dirname(transcript_path))
+                shutil.rmtree(directory)
+
+                del speaker_transcripts[transcript_idx]
+                transcript_idx -= 1
 
 
 def cli() -> int:

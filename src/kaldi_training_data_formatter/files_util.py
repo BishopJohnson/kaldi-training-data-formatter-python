@@ -43,6 +43,28 @@ class FilesUtil:
         return paths
 
     @staticmethod
+    def has_all_audio_files_for_transcript(transcript_path: str, verbose: bool = False) -> bool:
+        directory: str = os.path.dirname(transcript_path)
+
+        if not directory:
+            if verbose:
+                print(f'Directory is not valid for transcript: "{transcript_path}"')
+
+            return False
+
+        lines: dict[str, TranscriptLine] = FilesUtil.__get_transcript_lines(transcript_path)
+
+        for line in lines:
+            line_path: str = os.path.join(directory, line)
+            line_flac_path: str = line_path + FLAC_EXT
+            line_wav_path: str = line_path + WAV_EXT
+
+            if not os.path.isfile(line_flac_path) and not os.path.isfile(line_wav_path):
+                return False
+
+        return True
+
+    @staticmethod
     def __format_audio_files_for_transcript(transcript_path: str, verbose: bool = False) -> None:
         directory: str = os.path.dirname(transcript_path)
 
