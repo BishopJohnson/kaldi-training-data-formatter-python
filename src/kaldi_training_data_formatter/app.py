@@ -56,6 +56,7 @@ class App:
             validate_flag: bool | None = self.__args.validate
 
             if format_flag:
+                self.__format_audio_paths()
                 self.__format_transcript_files()
 
             if compile_flag:
@@ -100,6 +101,9 @@ class App:
     def __format_audio_files(self) -> None:
         print('Formatting audio files')
         FilesUtil.format_audio_files(self.__audio_root, verbose=self.__verbose)
+
+    def __format_audio_paths(self) -> None:
+        FilesUtil.format_paths(self.__audio_root)
 
     def __format_transcript_files(self) -> None:
         print('Formatting transcript files')

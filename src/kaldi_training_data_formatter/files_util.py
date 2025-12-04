@@ -1,4 +1,5 @@
 ﻿import os.path
+import shutil
 from enum import Enum
 
 from kaldi_training_data_formatter import TranscriptLine, \
@@ -18,6 +19,33 @@ class FilesUtil:
     @staticmethod
     def format_audio_files(root: str, verbose: bool = False) -> None:
         FilesUtil.__format_files(root, FilesUtil.__FormatType.Audio, verbose=verbose)
+
+    @staticmethod
+    def format_paths(root: str, verbose: bool = False) -> None:
+        if not os.path.isdir(root):
+            raise Exception(f'Given root is not a directory: "{root}"')
+
+        directories_queue: list[str] = [root]
+
+        while len(directories_queue) > 0:
+            directory: str = directories_queue.pop()
+
+            # Format directory name
+            parent, basename = os.path.split(directory)
+            old: str = directory
+            directory = os.path.join(parent, basename.lower())
+            shutil.move(old, directory)
+
+            # Queue subdirectories and rename files
+            for path in os.scandir(directory):
+                if path.is_dir():
+                    directories_queue.append(path.path)
+                elif path.is_file():
+                    filepath: str = path.path
+                    _, filename = os.path.split(filepath)
+                    _, ext = os.path.splitext(filename)
+                    new_filepath: str = os.path.join(directory, filename.lower() + ext)
+                    shutil.move(filepath, new_filepath)
 
     @staticmethod
     def format_transcript_files(root: str, verbose: bool = False) -> None:
@@ -114,8 +142,8 @@ class FilesUtil:
         unobserved_ids_list += unobserved_ids
 
         for el in unobserved_ids_list:
-            flac_filename: str = os.path.join(directory, f'{el}{FLAC_EXT}')
-            wav_filename: str = os.path.join(directory, f'{el}{WAV_EXT}')
+            flac_filename: str = os.path.join(directory, el + FLAC_EXT)
+            wav_filename: str = os.path.join(directory, el + WAV_EXT)
 
             if flac_filename in files or wav_filename in files:
                 unobserved_ids.remove(el)
@@ -132,7 +160,7 @@ class FilesUtil:
 
         while len(directories_queue) > 0:
             directory: str = directories_queue.pop()
-            directories_queue += [f.path for f in os.scandir(directory) if f.is_dir()]
+            directories_queue.extend([f.path for f in os.scandir(directory) if f.is_dir()])
             has_transcript, transcript_path = FilesUtil.__has_transcript_file(directory)
 
             if not has_transcript:
