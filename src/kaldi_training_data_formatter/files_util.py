@@ -42,8 +42,16 @@ class FilesUtil:
                     directories_queue.append(path.path)
                 elif path.is_file():
                     filepath: str = path.path
-                    _, filename = os.path.split(filepath)
-                    _, ext = os.path.splitext(filename)
+                    _, filename_and_ext = os.path.split(filepath)
+                    filename: str
+                    ext: str
+
+                    if filename_and_ext.endswith(TRANSCRIPT_EXT):
+                        ext = TRANSCRIPT_EXT
+                        filename = filename_and_ext[0:len(ext)]
+                    else:
+                        filename, ext = os.path.splitext(filename_and_ext)
+
                     new_filepath: str = os.path.join(directory, filename.lower() + ext)
                     shutil.move(filepath, new_filepath)
 
