@@ -1,5 +1,4 @@
 ﻿import os.path
-import shutil
 from enum import Enum
 
 from kaldi_training_data_formatter import TranscriptLine, \
@@ -34,7 +33,7 @@ class FilesUtil:
             parent, basename = os.path.split(directory)
             old: str = directory
             directory = os.path.join(parent, basename.lower())
-            shutil.move(old, directory)
+            os.rename(old, directory)
 
             # Queue subdirectories and rename files
             for path in os.scandir(directory):
@@ -53,7 +52,7 @@ class FilesUtil:
                         filename, ext = os.path.splitext(filename_and_ext)
 
                     new_filepath: str = os.path.join(directory, filename.lower() + ext)
-                    shutil.move(filepath, new_filepath)
+                    os.rename(filepath, new_filepath)
 
     @staticmethod
     def format_transcript_files(root: str, verbose: bool = False) -> None:
