@@ -2,7 +2,7 @@
 import unittest
 
 from case.file_test_case import FileTestCase
-from kaldi_training_data_formatter import LexiconCompiler
+from kaldi_training_data_formatter import LexiconCompiler, LEXICON_FILENAME
 
 
 class TestLexiconCompiler(FileTestCase):
@@ -74,7 +74,7 @@ class TestLexiconCompiler(FileTestCase):
             with self.subTest():
                 # Arrange
                 expected_path: str = os.path.join(self.__class__.resources_path, expected)
-                actual_path: str = os.path.join(self.__class__.output_path, LexiconCompiler.LEXICON_FILENAME)
+                actual_path: str = os.path.join(self.__class__.output_path, LEXICON_FILENAME)
                 import_path: str = os.path.join(self.__class__.input_path, lexicon)
 
                 # Assumptions
@@ -142,7 +142,7 @@ class TestLexiconCompiler(FileTestCase):
             with self.subTest():
                 # Arrange
                 expected_path: str = os.path.join(self.__class__.resources_path, expected)
-                actual_path: str = os.path.join(self.__class__.output_path, LexiconCompiler.LEXICON_FILENAME)
+                actual_path: str = os.path.join(self.__class__.output_path, LEXICON_FILENAME)
 
                 # Assumptions
                 self.assertFileExists(expected_path,
@@ -176,7 +176,7 @@ class TestLexiconCompiler(FileTestCase):
             with self.subTest():
                 # Arrange
                 expected_path: str = os.path.join(self.__class__.resources_path, expected)
-                actual_path: str = os.path.join(self.__class__.output_path, LexiconCompiler.LEXICON_FILENAME)
+                actual_path: str = os.path.join(self.__class__.output_path, LEXICON_FILENAME)
 
                 # Assumptions
                 self.assertFileExists(expected_path,
