@@ -1,14 +1,28 @@
 ﻿class Chapter:
     def __init__(self, init_id: int):
         self.__id: int = init_id
+        self.__minutes: float = 0.0
         self.__project_id: int = 0
         self.__song_id: str | None = None
+        self.__song_title: str | None = None
         self.__speaker_id: int = 0
         self.__subset: str | None = None
 
     @property
     def id(self) -> int:
         return self.__id
+
+    @id.setter
+    def id(self, value: int) -> None:
+        self.__id = value
+
+    @property
+    def minutes(self) -> float:
+        return self.__minutes
+
+    @minutes.setter
+    def minutes(self, value: float) -> None:
+        self.__minutes = value
 
     @property
     def project_id(self) -> int:
@@ -31,6 +45,14 @@
         del self.__song_id
 
     @property
+    def song_title(self) -> str | None:
+        return self.__song_title
+
+    @song_title.setter
+    def song_title(self, value: str) -> None:
+        self.__song_title = value
+
+    @property
     def speaker_id(self) -> int:
         return self.__speaker_id
 
@@ -45,30 +67,6 @@
     @subset.setter
     def subset(self, value: str) -> None:
         self.__subset = value
-
-    def __ge__(self, other) -> bool:
-        if other is None:
-            return True
-
-        if self is other:
-            return True
-
-        if not isinstance(other, Chapter):
-            raise NotImplemented
-
-        return self.id >= other.id
-
-    def __gt__(self, other) -> bool:
-        if other is None:
-            return True
-
-        if self is other:
-            return False
-
-        if not isinstance(other, Chapter):
-            raise NotImplemented
-
-        return self.id > other.id
 
     def __eq__(self, other) -> bool:
         if other is None:
@@ -88,8 +86,71 @@
                 and ((self.subset is None and other.subset is None)
                      or (self.subset is not None and self.subset == other.subset)))
 
-    def __hash__(self) -> int:
-        return hash(self.id)
+    def __ge__(self, other) -> bool:
+        if other is None:
+            return True
+
+        if self is other:
+            return True
+
+        if not isinstance(other, Chapter):
+            raise NotImplemented
+
+        # ID
+        if self.id < other.id:
+            return False
+
+        if self.id > other.id:
+            return True
+
+        # Speaker ID
+        if self.speaker_id < other.speaker_id:
+            return False
+
+        if self.speaker_id > other.speaker_id:
+            return True
+
+        # Song title
+        if self.song_title is None:
+            return other.song_title is None
+
+        if other.song_title is None:
+            return True
+
+        return self.song_title >= other.song_title
+
+    def __gt__(self, other) -> bool:
+        if other is None:
+            return True
+
+        if self is other:
+            return False
+
+        if not isinstance(other, Chapter):
+            raise NotImplemented
+
+        # ID
+        if self.id < other.id:
+            return False
+
+        if self.id > other.id:
+            return True
+
+        # Speaker ID
+        if self.speaker_id < other.speaker_id:
+            return False
+
+        if self.speaker_id > other.speaker_id:
+            return True
+
+        # Song title
+        if self.song_title is None:
+            return False
+
+        if other.song_title is None:
+            return True
+
+        return self.song_title > other.song_title
 
     def __le__(self, other) -> bool:
         if other is None:
@@ -101,7 +162,28 @@
         if not isinstance(other, Chapter):
             raise NotImplemented
 
-        return self.id <= other.id
+        # ID
+        if self.id < other.id:
+            return True
+
+        if self.id > other.id:
+            return False
+
+        # Speaker ID
+        if self.speaker_id < other.speaker_id:
+            return True
+
+        if self.speaker_id > other.speaker_id:
+            return False
+
+        # Song title
+        if self.song_title is None:
+            return other.song_title is None
+
+        if other.song_title is None:
+            return False
+
+        return self.song_title <= other.song_title
 
     def __lt__(self, other) -> bool:
         if other is None:
@@ -113,15 +195,25 @@
         if not isinstance(other, Chapter):
             raise NotImplemented
 
-        return self.id < other.id
+        # ID
+        if self.id < other.id:
+            return True
 
-    def __str__(self) -> str:
-        str_list: list[str] = [
-            str(self.id),
-            str(self.speaker_id),
-            str(self.subset),
-            str(self.project_id),
-            str(self.song_id),
-        ]
+        if self.id > other.id:
+            return False
 
-        return ' | '.join(str_list)
+        # Speaker ID
+        if self.speaker_id < other.speaker_id:
+            return True
+
+        if self.speaker_id > other.speaker_id:
+            return False
+
+        # Song title
+        if self.song_title is None:
+            return not other.song_title is None
+
+        if other.song_title is None:
+            return False
+
+        return self.song_title < other.song_title

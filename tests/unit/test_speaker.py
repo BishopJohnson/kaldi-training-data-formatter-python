@@ -1,12 +1,12 @@
 ﻿import unittest
 
-from kaldi_training_data_formatter import Chapter
+from kaldi_training_data_formatter import Speaker
 
 
-class TestChapter(unittest.TestCase):
+class TestSpeaker(unittest.TestCase):
     def test_eq_when_other_is_none_returns_false(self):
         # Arrange
-        class_under_test: Chapter = Chapter(0)
+        class_under_test: Speaker = Speaker(0)
         other = None
 
         # Act
@@ -17,7 +17,7 @@ class TestChapter(unittest.TestCase):
 
     def test_eq_when_other_is_self_returns_true(self):
         # Arrange
-        class_under_test: Chapter = Chapter(0)
+        class_under_test: Speaker = Speaker(0)
         other = class_under_test
 
         # Act
@@ -32,14 +32,14 @@ class TestChapter(unittest.TestCase):
         for ids in param_list:
             with self.subTest():
                 # Arrange
-                class_under_test: Chapter = Chapter(ids)
-                other: Chapter = Chapter(ids)
+                class_under_test: Speaker = Speaker(ids)
+                other: Speaker = Speaker(ids)
 
                 # Act
                 actual: bool = class_under_test == other
 
                 # Assert
-                self.assertTrue(actual, f'Assert that "{ids} == {ids}" is True')
+                self.assertTrue(actual)
 
     def test_eq_when_other_has_different_id_returns_false(self):
         param_list: list[tuple[int, int]] = [
@@ -51,18 +51,18 @@ class TestChapter(unittest.TestCase):
         for self_id, other_id in param_list:
             with self.subTest():
                 # Arrange
-                class_under_test: Chapter = Chapter(self_id)
-                other: Chapter = Chapter(other_id)
+                class_under_test: Speaker = Speaker(self_id)
+                other: Speaker = Speaker(other_id)
 
                 # Act
                 actual: bool = class_under_test == other
 
                 # Assert
-                self.assertFalse(actual, f'Assert that "{self_id} == {other_id}" is False')
+                self.assertFalse(actual)
 
     def test_ge_when_other_is_none_returns_true(self):
         # Arrange
-        class_under_test: Chapter = Chapter(0)
+        class_under_test: Speaker = Speaker(0)
         other = None
 
         # Act
@@ -73,7 +73,7 @@ class TestChapter(unittest.TestCase):
 
     def test_ge_when_other_is_self_returns_true(self):
         # Arrange
-        class_under_test: Chapter = Chapter(0)
+        class_under_test: Speaker = Speaker(0)
         other = class_under_test
 
         # Act
@@ -93,18 +93,18 @@ class TestChapter(unittest.TestCase):
         for self_id, other_id, expected in param_list:
             with self.subTest():
                 # Arrange
-                class_under_test: Chapter = Chapter(self_id)
-                other: Chapter = Chapter(other_id)
+                class_under_test: Speaker = Speaker(self_id)
+                other: Speaker = Speaker(other_id)
 
                 # Act
                 actual: bool = class_under_test >= other
 
                 # Assert
-                self.assertEqual(expected, actual, f'Assert that "{self_id} >= {other_id}" is {str(expected)}')
+                self.assertEqual(expected, actual)
 
     def test_gt_when_other_is_none_returns_true(self):
         # Arrange
-        class_under_test: Chapter = Chapter(0)
+        class_under_test: Speaker = Speaker(0)
         other = None
 
         # Act
@@ -115,8 +115,8 @@ class TestChapter(unittest.TestCase):
 
     def test_gt_when_other_is_self_returns_false(self):
         # Arrange
-        class_under_test: Chapter = Chapter(0)
-        other: Chapter = class_under_test
+        class_under_test: Speaker = Speaker(0)
+        other = class_under_test
 
         # Act
         actual: bool = class_under_test > other
@@ -135,18 +135,18 @@ class TestChapter(unittest.TestCase):
         for self_id, other_id, expected in param_list:
             with self.subTest():
                 # Arrange
-                class_under_test: Chapter = Chapter(self_id)
-                other: Chapter = Chapter(other_id)
+                class_under_test: Speaker = Speaker(self_id)
+                other: Speaker = Speaker(other_id)
 
                 # Act
                 actual: bool = class_under_test > other
 
                 # Assert
-                self.assertEqual(expected, actual, f'Assert that "{self_id} > {other_id}" is {str(expected)}')
+                self.assertEqual(expected, actual)
 
     def test_le_when_other_is_none_returns_true(self):
         # Arrange
-        class_under_test: Chapter = Chapter(0)
+        class_under_test: Speaker = Speaker(0)
         other = None
 
         # Act
@@ -157,8 +157,8 @@ class TestChapter(unittest.TestCase):
 
     def test_le_when_other_is_self_returns_true(self):
         # Arrange
-        class_under_test: Chapter = Chapter(0)
-        other: Chapter = class_under_test
+        class_under_test: Speaker = Speaker(0)
+        other = class_under_test
 
         # Act
         actual: bool = class_under_test <= other
@@ -177,18 +177,18 @@ class TestChapter(unittest.TestCase):
         for self_id, other_id, expected in param_list:
             with self.subTest():
                 # Arrange
-                class_under_test: Chapter = Chapter(self_id)
-                other: Chapter = Chapter(other_id)
+                class_under_test: Speaker = Speaker(self_id)
+                other: Speaker = Speaker(other_id)
 
                 # Act
                 actual: bool = class_under_test <= other
 
                 # Assert
-                self.assertEqual(expected, actual, f'Assert that "{self_id} <= {other_id}" is {str(expected)}')
+                self.assertEqual(expected, actual)
 
     def test_lt_when_other_is_none_returns_true(self):
         # Arrange
-        class_under_test: Chapter = Chapter(0)
+        class_under_test: Speaker = Speaker(0)
         other = None
 
         # Act
@@ -199,8 +199,8 @@ class TestChapter(unittest.TestCase):
 
     def test_lt_when_other_is_self_returns_false(self):
         # Arrange
-        class_under_test: Chapter = Chapter(0)
-        other: Chapter = class_under_test
+        class_under_test: Speaker = Speaker(0)
+        other = class_under_test
 
         # Act
         actual: bool = class_under_test < other
@@ -219,14 +219,14 @@ class TestChapter(unittest.TestCase):
         for self_id, other_id, expected in param_list:
             with self.subTest():
                 # Arrange
-                class_under_test: Chapter = Chapter(self_id)
-                other: Chapter = Chapter(other_id)
+                class_under_test: Speaker = Speaker(self_id)
+                other: Speaker = Speaker(other_id)
 
                 # Act
                 actual: bool = class_under_test < other
 
                 # Assert
-                self.assertEqual(expected, actual, f'Assert that "{self_id} < {other_id}" is {str(expected)}')
+                self.assertEqual(expected, actual)
 
 
 if __name__ == '__main__':

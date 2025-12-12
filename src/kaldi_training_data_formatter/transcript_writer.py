@@ -1,18 +1,16 @@
 ﻿import os.path
 from typing import Final, Collection
 
-from kaldi_training_data_formatter import TranscriptLine
+from kaldi_training_data_formatter import TranscriptLine, TRANSCRIPT_EXT
 
 
 class TranscriptWriter:
-    __EXTENSION: Final[str] = '.trans.txt'
-
     def __init__(self, root: str):
         self.__root: Final[str] = root
 
     def write_transcript(self, filename: str, lines: Collection[TranscriptLine] | Collection[str]) -> None:
-        if not filename.endswith(TranscriptWriter.__EXTENSION):
-            filename += TranscriptWriter.__EXTENSION
+        if not filename.endswith(TRANSCRIPT_EXT):
+            filename += TRANSCRIPT_EXT
 
         filepath: str = os.path.join(self.__root, filename)
         directory: str = os.path.dirname(filepath)

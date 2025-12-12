@@ -2,7 +2,7 @@
 import unittest
 
 from case.file_test_case import FileTestCase
-from kaldi_training_data_formatter import VocabCompiler
+from kaldi_training_data_formatter import VocabCompiler, VOCAB_FILENAME
 
 
 class TestVocabCompiler(FileTestCase):
@@ -61,7 +61,7 @@ class TestVocabCompiler(FileTestCase):
     def test_save_vocabulary_given_valid_input_file_creates_expected_output_file(self):
         # Arrange
         expected_path: str = os.path.join(self.__class__.resources_path, 'expected-vocab.txt')
-        actual_path: str = os.path.join(self.__class__.output_path, VocabCompiler.VOCAB_FILENAME)
+        actual_path: str = os.path.join(self.__class__.output_path, VOCAB_FILENAME)
 
         # Assumptions
         self.assertFileExists(expected_path,

@@ -1,11 +1,10 @@
 ﻿import os.path
 from typing import Final, Collection
 
+from kaldi_training_data_formatter import LEXICON_FILENAME, NO_PHONES_VALUE
+
 
 class LexiconCompiler:
-    LEXICON_FILENAME: Final[str] = 'lexicon.txt'
-    __NO_PHONES_VALUE: Final[str] = '<<<<<!!! NO PHONES !!!>>>>>'
-
     def __init__(self, input_root: str, output_root: str):
         self.__input_root: Final[str] = input_root
         self.__output_root: Final[str] = output_root
@@ -44,7 +43,7 @@ class LexiconCompiler:
 
         # Read from existing lexicon
         if use_existing:
-            path: str = os.path.join(self.__input_root, LexiconCompiler.LEXICON_FILENAME)
+            path: str = os.path.join(self.__input_root, LEXICON_FILENAME)
 
             if os.path.isfile(path):
                 LexiconCompiler.__read_lexicon(path, temp_lexicon)
@@ -59,7 +58,7 @@ class LexiconCompiler:
         words += self.__lexicon.keys()
         words.sort()
 
-        filepath: str = os.path.join(self.__output_root, LexiconCompiler.LEXICON_FILENAME)
+        filepath: str = os.path.join(self.__output_root, LEXICON_FILENAME)
 
         try:
             os.makedirs(self.__output_root, exist_ok=True)
@@ -83,7 +82,7 @@ class LexiconCompiler:
                     else:
                         f.write(word)
                         f.write(' ')
-                        f.write(LexiconCompiler.__NO_PHONES_VALUE)
+                        f.write(NO_PHONES_VALUE)
                         f.write('\n')
                         print(f'Wrote word "{word}" with no phones on line {line_count} to lexicon')
 
@@ -119,7 +118,7 @@ class LexiconCompiler:
 
                     phones: str = ' '.join(elements[1:]).upper()
 
-                    if phones == LexiconCompiler.__NO_PHONES_VALUE:
+                    if phones == NO_PHONES_VALUE:
                         continue
 
                     word: str = elements[0].lower()

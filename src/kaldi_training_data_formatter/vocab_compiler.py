@@ -1,12 +1,10 @@
 ﻿import os.path
 from typing import Final
 
-from kaldi_training_data_formatter import ProjectUtil
+from kaldi_training_data_formatter import ProjectUtil, VOCAB_FILENAME
 
 
 class VocabCompiler:
-    VOCAB_FILENAME: Final[str] = 'vocab.txt'
-
     def __init__(self, input_root: str, output_root: str):
         self.__input_root: Final[str] = input_root
         self.__output_root: Final[str] = output_root
@@ -71,7 +69,7 @@ class VocabCompiler:
                     self.vocabulary.update(line.strip('\n\r ').lower().split(' ')[1:])
 
     def save_vocabulary(self) -> None:
-        filepath: str = os.path.join(self.__output_root, VocabCompiler.VOCAB_FILENAME)
+        filepath: str = os.path.join(self.__output_root, VOCAB_FILENAME)
         sorted_vocab: list[str] = []
         sorted_vocab += self.vocabulary
         sorted_vocab.sort()
