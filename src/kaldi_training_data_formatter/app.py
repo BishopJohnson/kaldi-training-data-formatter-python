@@ -4,14 +4,15 @@ import shutil
 import traceback
 
 from kaldi_training_data_formatter import \
-    VocabCompiler, \
+    AUDIO_DIR_NAME, \
+    ChaptersCompiler, \
     FilesUtil, \
     LexiconCompiler, \
-    SubsetSorter, \
-    ChaptersCompiler, \
-    AUDIO_DIR_NAME, \
     SpeakersReader, \
-    Speaker
+    Speaker, \
+    SpeakersSplitter, \
+    SubsetSorter, \
+    VocabCompiler
 
 
 class App:
@@ -43,6 +44,12 @@ class App:
                             help=('The number or ratio of speakers to be used in the test subset.'
                                   + ' Integers greater than or equal to 1 will specify the number of speakers. '
                                   + ' Values between [0.0, 1.0) will specify the ratio of speakers.'))
+        parser.add_argument('--speaker-chapters',
+                            type=int,
+                            help=('The maximum number of chapters any given speaker may have.'
+                                  + ' If a speaker goes over the given number of chapters then those chapters may be'
+                                  + ' split off and assigned to a new speaker ID.'))
+
         self.__args = parser.parse_args()
         self.__root: str = self.__args.root if self.__args.root else os.getcwd()
         self.__audio_root: str = os.path.join(self.__root, AUDIO_DIR_NAME)
@@ -54,6 +61,9 @@ class App:
             format_flag: bool | None = self.__args.format
             sort_flag: bool | None = self.__args.sort
             validate_flag: bool | None = self.__args.validate
+
+            if sort_flag:
+                self.__split_speaker_chapters(False)
 
             if format_flag:
                 self.__format_audio_paths()
@@ -122,6 +132,13 @@ class App:
             sorter.sort_sources(test_speakers=self.__args.test_speakers)
         else:
             sorter.sort_sources()
+
+    def __split_speaker_chapters(self, is_sorted: bool) -> None:
+        print('Splitting speakers')
+        speakers_splitter: SpeakersSplitter = SpeakersSplitter.from_root(self.__root)
+        speakers_splitter.max_chapters_per_speaker = self.__args.speaker_chapters
+        speakers_splitter.verbose = self.__verbose
+        speakers_splitter.split(is_sorted=is_sorted)
 
     def __validate_speaker_chapters(self) -> None:
         print('Validating speaker chapters')

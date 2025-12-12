@@ -65,6 +65,15 @@
 
         return speaker
 
+    def __copy__(self):
+        copy: Speaker = Speaker(self.speaker_id)
+        copy.minutes = self.minutes
+        copy.name = self.name
+        copy.sex = self.sex
+        copy.subset = self.subset
+
+        return copy
+
     def __eq__(self, other) -> bool:
         if other is None:
             return False
