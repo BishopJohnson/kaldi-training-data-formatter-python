@@ -88,10 +88,13 @@ class SpeakersSplitter:
                 next_id += 1
                 alt_speaker_count += 1
 
-                # Move maximum amount of chapters to output path for the new speaker
+                # Create output directory for new speaker
                 new_speaker_path: str = os.path.join(output_audio_path,
                                                      str(new_speaker.speaker_id),
                                                      new_speaker.subset if is_sorted else '')
+                os.makedirs(new_speaker_path, exist_ok=True)
+
+                # Move maximum amount of chapters to output path for the new speaker
                 split_idx: int = len(transcript_paths) - self.max_chapters_per_speaker
                 new_speaker_transcripts: list[str] = transcript_paths[split_idx:]
                 transcript_paths = transcript_paths[:split_idx]
@@ -99,13 +102,11 @@ class SpeakersSplitter:
                 for transcript_path in new_speaker_transcripts:
                     _, song_id = ProjectUtil.get_user_and_project_id(transcript_path)
                     src_path: str = os.path.join(speaker_path, song_id)
-                    dst_path: str = os.path.join(new_speaker_path, song_id)
 
-                    os.makedirs(dst_path, exist_ok=True)
-                    shutil.move(src_path, dst_path)
+                    shutil.move(src_path, new_speaker_path)
 
                     if self.verbose:
-                        print(f'Split off chapter from "{src_path}" to "{dst_path}"')
+                        print(f'Split off chapter from "{src_path}" to "{new_speaker_path}"')
 
                 # Add the new speaker to the collections
                 new_speakers.append(new_speaker)
