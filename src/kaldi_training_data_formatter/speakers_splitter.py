@@ -117,7 +117,7 @@ class SpeakersSplitter:
             output_path: str = os.path.join(output_audio_path,
                                             speaker.subset if is_sorted else '', )
 
-            if not speaker_path.startswith(output_path):
+            if not os.path.normpath(speaker_path).startswith(os.path.normpath(output_path)):
                 os.makedirs(output_path, exist_ok=True)
                 shutil.move(speaker_path, output_path)
 
