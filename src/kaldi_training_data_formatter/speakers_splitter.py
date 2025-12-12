@@ -69,8 +69,8 @@ class SpeakersSplitter:
 
             # Get the chapters associated with the speaker
             speaker_path: str = os.path.join(input_audio_path,
-                                             str(speaker.speaker_id),
-                                             speaker.subset if is_sorted else '')
+                                             speaker.subset if is_sorted else '',
+                                             str(speaker.speaker_id))
             transcript_paths: list[str] = FilesUtil.get_transcript_file_paths(speaker_path)
             alt_speaker_count: int = 0
 
@@ -90,8 +90,8 @@ class SpeakersSplitter:
 
                 # Create output directory for new speaker
                 new_speaker_path: str = os.path.join(output_audio_path,
-                                                     str(new_speaker.speaker_id),
-                                                     new_speaker.subset if is_sorted else '')
+                                                     new_speaker.subset if is_sorted else '',
+                                                     str(new_speaker.speaker_id))
                 os.makedirs(new_speaker_path, exist_ok=True)
 
                 # Move maximum amount of chapters to output path for the new speaker
@@ -114,13 +114,12 @@ class SpeakersSplitter:
                 updated_speakers = True
 
             # Move leftover chapters to output path
-            output_speaker_path: str = os.path.join(output_audio_path,
-                                                    str(speaker.speaker_id),
-                                                    speaker.subset if is_sorted else '')
+            output_path: str = os.path.join(output_audio_path,
+                                            speaker.subset if is_sorted else '', )
 
-            if not speaker_path == output_speaker_path:
-                os.makedirs(output_speaker_path, exist_ok=True)
-                shutil.move(speaker_path, output_speaker_path)
+            if not speaker_path.startswith(output_path):
+                os.makedirs(output_path, exist_ok=True)
+                shutil.move(speaker_path, output_path)
 
         if updated_speakers:
             new_speakers.sort()

@@ -138,7 +138,7 @@ class App:
         speakers_splitter: SpeakersSplitter = SpeakersSplitter.from_root(self.__root)
         speakers_splitter.max_chapters_per_speaker = self.__args.speaker_chapters
         speakers_splitter.verbose = self.__verbose
-        speakers_splitter.split(is_sorted)
+        speakers_splitter.split(is_sorted=is_sorted)
 
     def __validate_speaker_chapters(self) -> None:
         print('Validating speaker chapters')
