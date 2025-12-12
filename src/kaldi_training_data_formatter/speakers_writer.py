@@ -7,7 +7,7 @@ from kaldi_training_data_formatter import SPEAKERS_FILENAME, Speaker
 class SpeakersWriter:
     __HEADER: Final[str] = ('; id: The ID of the person in the audio\n' +
                             '; sex: \'F\' for female, \'M\' for male\n' +
-                            '; - Add \'X\' for "prefer not to say" if Vosk is updated to support it)\n' +
+                            '; - Add \'X\' for "prefer not to say" if Vosk is updated to support it\n' +
                             '; subset:\n' +
                             '; name: The provided name of the person\n' +
                             ';')
