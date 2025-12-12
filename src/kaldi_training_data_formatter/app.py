@@ -62,6 +62,9 @@ class App:
             sort_flag: bool | None = self.__args.sort
             validate_flag: bool | None = self.__args.validate
 
+            if sort_flag:
+                self.__split_speaker_chapters()
+
             if format_flag:
                 self.__format_audio_paths()
                 self.__format_transcript_files()
@@ -74,7 +77,6 @@ class App:
 
             if sort_flag:
                 self.__sort_subsets()
-                self.__split_speaker_chapters()
 
             if validate_flag:
                 self.__validate_speaker_chapters()
