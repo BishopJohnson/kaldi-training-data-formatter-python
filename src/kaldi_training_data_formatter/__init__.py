@@ -32,6 +32,7 @@ from .files_util import FilesUtil
 # Depends on the above
 from .chapters_compiler import ChaptersCompiler
 from .lexicon_compiler import LexiconCompiler
+from .speakers_splitter import SpeakersSplitter
 from .subset_sorter import SubsetSorter
 from .vocab_compiler import VocabCompiler
 
