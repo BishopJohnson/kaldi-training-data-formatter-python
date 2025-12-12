@@ -40,7 +40,7 @@ class SpeakersSplitter:
     def from_root(cls, root: str):
         return cls(root, root)
 
-    def split(self) -> None:
+    def split(self, is_sorted: bool = True) -> None:
         if self.max_chapters_per_speaker < 1:
             if self.verbose:
                 print('Skipping splitting speakers: max_chapters_per_speaker is less than 1')
@@ -68,7 +68,9 @@ class SpeakersSplitter:
             new_speakers.append(speaker)
 
             # Get the chapters associated with the speaker
-            speaker_path: str = os.path.join(input_audio_path, str(speaker.speaker_id), speaker.subset)
+            speaker_path: str = os.path.join(input_audio_path,
+                                             str(speaker.speaker_id),
+                                             speaker.subset if is_sorted else '')
             transcript_paths: list[str] = FilesUtil.get_transcript_file_paths(speaker_path)
             alt_speaker_count: int = 0
 
@@ -87,7 +89,9 @@ class SpeakersSplitter:
                 alt_speaker_count += 1
 
                 # Move maximum amount of chapters to output path for the new speaker
-                new_speaker_path: str = os.path.join(output_audio_path, str(new_speaker.speaker_id), new_speaker.subset)
+                new_speaker_path: str = os.path.join(output_audio_path,
+                                                     str(new_speaker.speaker_id),
+                                                     new_speaker.subset if is_sorted else '')
                 split_idx: int = len(transcript_paths) - self.max_chapters_per_speaker
                 new_speaker_transcripts: list[str] = transcript_paths[split_idx:]
                 transcript_paths = transcript_paths[:split_idx]
@@ -109,7 +113,9 @@ class SpeakersSplitter:
                 updated_speakers = True
 
             # Move leftover chapters to output path
-            output_speaker_path: str = os.path.join(output_audio_path, str(speaker.speaker_id), speaker.subset)
+            output_speaker_path: str = os.path.join(output_audio_path,
+                                                    str(speaker.speaker_id),
+                                                    speaker.subset if is_sorted else '')
 
             if not speaker_path == output_speaker_path:
                 os.makedirs(output_speaker_path, exist_ok=True)

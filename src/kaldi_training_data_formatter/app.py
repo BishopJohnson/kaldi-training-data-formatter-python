@@ -63,7 +63,7 @@ class App:
             validate_flag: bool | None = self.__args.validate
 
             if sort_flag:
-                self.__split_speaker_chapters()
+                self.__split_speaker_chapters(False)
 
             if format_flag:
                 self.__format_audio_paths()
@@ -133,12 +133,12 @@ class App:
         else:
             sorter.sort_sources()
 
-    def __split_speaker_chapters(self) -> None:
+    def __split_speaker_chapters(self, is_sorted: bool) -> None:
         print('Splitting speakers')
         speakers_splitter: SpeakersSplitter = SpeakersSplitter.from_root(self.__root)
         speakers_splitter.max_chapters_per_speaker = self.__args.speaker_chapters
         speakers_splitter.verbose = self.__verbose
-        speakers_splitter.split()
+        speakers_splitter.split(is_sorted)
 
     def __validate_speaker_chapters(self) -> None:
         print('Validating speaker chapters')
