@@ -110,7 +110,10 @@ class SpeakersSplitter:
 
             # Move leftover chapters to output path
             output_speaker_path: str = os.path.join(output_audio_path, str(speaker.speaker_id), speaker.subset)
-            shutil.move(speaker_path, output_speaker_path)
+
+            if not speaker_path == output_speaker_path:
+                os.makedirs(output_speaker_path, exist_ok=True)
+                shutil.move(speaker_path, output_speaker_path)
 
         if updated_speakers:
             new_speakers.sort()
